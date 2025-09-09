@@ -2,12 +2,23 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] private float movingSpeed = 5f;
+    [SerializeField] private PlayerSatatsSO stats;
+    [SerializeField] private float movingSpeed = 1f;
 
     private Rigidbody2D rb;
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        rb.interpolation = RigidbodyInterpolation2D.Interpolate;
+
+        if (stats == null)
+        {
+            var shooter = GetComponent<PlayerShooting>();
+            if (shooter != null)
+            {
+                stats = shooter.Stats;
+            }
+        }
     }
 
 
@@ -18,6 +29,7 @@ public class Player : MonoBehaviour
 
         inputVector = inputVector.normalized;
 
-        rb.MovePosition(rb.position + inputVector * (movingSpeed * Time.fixedDeltaTime));
+        float speed = stats != null ? stats.moveSpeed : movingSpeed;
+        rb.MovePosition(rb.position + inputVector * (speed * Time.fixedDeltaTime));
     }
 }

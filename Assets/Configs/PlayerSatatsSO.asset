@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6988f120f206ff94d8b209aa372f0972, type: 3}
   m_Name: PlayerSatatsSO
   m_EditorClassIdentifier: 
+  moveSpeed: 6
   maxHP: 5
   fireRate: 1
   bulletSpeed: 10

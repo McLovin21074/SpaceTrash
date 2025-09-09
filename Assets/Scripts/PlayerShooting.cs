@@ -8,6 +8,8 @@ public class PlayerShooting : MonoBehaviour
 
     private float cooldown;
 
+    public PlayerSatatsSO Stats => stats;
+
     private void Awake()
     {
         if (pool == null) pool = BulletPool.Instance;
@@ -61,4 +63,3 @@ public class PlayerShooting : MonoBehaviour
         }
     }
 }
-

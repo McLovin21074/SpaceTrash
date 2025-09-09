@@ -3,6 +3,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "PlayerSatatsSO", menuName = "Scriptable Objects/PlayerSatatsSO")]
 public class PlayerSatatsSO : ScriptableObject
 {
+    [Header("Movement")]
+    public float moveSpeed = 5f;
+
     [Header("Health")]
     public int maxHP = 5;
 

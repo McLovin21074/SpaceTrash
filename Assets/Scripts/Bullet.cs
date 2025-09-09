@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
+    [SerializeField] private LayerMask obstacleMask;
     [SerializeField] private float speed = 12f;
     [SerializeField] private float range = 8f;
     [SerializeField] private int damage = 1;
@@ -45,6 +46,13 @@ public class Bullet : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (!gameObject.activeInHierarchy) return;
+
+        if (((1 << other.gameObject.layer) & obstacleMask) != 0)
+        {
+            ReturnToPool();
+            return;
+        }
+
         var dmg = other.GetComponent<IDamagable>();
         if (dmg != null)
         {
