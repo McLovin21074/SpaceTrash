@@ -1,0 +1,572 @@
+fileFormatVersion: 2
+guid: d88b25d021dc28c48bfbc52abad8f7ee
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 6580906483835555453
+    second: enemy_alien_raider_shooter_spritesheet_0
+  - first:
+      213: 2286780581499065744
+    second: enemy_alien_raider_shooter_spritesheet_1
+  - first:
+      213: -6842514946386280734
+    second: enemy_alien_raider_shooter_spritesheet_2
+  - first:
+      213: -5490478131757482058
+    second: enemy_alien_raider_shooter_spritesheet_3
+  - first:
+      213: -4630468780869394020
+    second: enemy_alien_raider_shooter_spritesheet_4
+  - first:
+      213: 5477646239084634787
+    second: enemy_alien_raider_shooter_spritesheet_5
+  - first:
+      213: 7355064755777558071
+    second: enemy_alien_raider_shooter_spritesheet_6
+  - first:
+      213: -28936493691238926
+    second: enemy_alien_raider_shooter_spritesheet_7
+  - first:
+      213: -5184089485791040949
+    second: enemy_alien_raider_shooter_spritesheet_8
+  - first:
+      213: 2576935371802136204
+    second: enemy_alien_raider_shooter_spritesheet_9
+  - first:
+      213: 8656805341681612713
+    second: enemy_alien_raider_shooter_spritesheet_10
+  - first:
+      213: 4650457790673548148
+    second: enemy_alien_raider_shooter_spritesheet_11
+  - first:
+      213: 3648466086193054177
+    second: enemy_alien_raider_shooter_spritesheet_12
+  - first:
+      213: -6956203647979420931
+    second: enemy_alien_raider_shooter_spritesheet_13
+  - first:
+      213: -4174087457674907348
+    second: enemy_alien_raider_shooter_spritesheet_14
+  - first:
+      213: 2325534887854882828
+    second: enemy_alien_raider_shooter_spritesheet_15
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: enemy_alien_raider_shooter_spritesheet_0
+      rect:
+        serializedVersion: 2
+        x: 21
+        y: 243
+        width: 39
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d7e45157493145b50800000000000000
+      internalID: 6580906483835555453
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_alien_raider_shooter_spritesheet_1
+      rect:
+        serializedVersion: 2
+        x: 101
+        y: 243
+        width: 39
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 095538fa2d64cbf10800000000000000
+      internalID: 2286780581499065744
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_alien_raider_shooter_spritesheet_2
+      rect:
+        serializedVersion: 2
+        x: 181
+        y: 243
+        width: 39
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2ee3852d8e08a01a0800000000000000
+      internalID: -6842514946386280734
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_alien_raider_shooter_spritesheet_3
+      rect:
+        serializedVersion: 2
+        x: 261
+        y: 243
+        width: 39
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6bf7b8d9a37edc3b0800000000000000
+      internalID: -5490478131757482058
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_alien_raider_shooter_spritesheet_4
+      rect:
+        serializedVersion: 2
+        x: 21
+        y: 163
+        width: 39
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c916eb45d254dbfb0800000000000000
+      internalID: -4630468780869394020
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_alien_raider_shooter_spritesheet_5
+      rect:
+        serializedVersion: 2
+        x: 101
+        y: 163
+        width: 39
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3a2e4ed8b32840c40800000000000000
+      internalID: 5477646239084634787
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_alien_raider_shooter_spritesheet_6
+      rect:
+        serializedVersion: 2
+        x: 181
+        y: 163
+        width: 39
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 736dd143d60721660800000000000000
+      internalID: 7355064755777558071
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_alien_raider_shooter_spritesheet_7
+      rect:
+        serializedVersion: 2
+        x: 259
+        y: 163
+        width: 41
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2f50d7c8962399ff0800000000000000
+      internalID: -28936493691238926
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_alien_raider_shooter_spritesheet_8
+      rect:
+        serializedVersion: 2
+        x: 21
+        y: 83
+        width: 39
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b4a6693441a6e08b0800000000000000
+      internalID: -5184089485791040949
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_alien_raider_shooter_spritesheet_9
+      rect:
+        serializedVersion: 2
+        x: 101
+        y: 83
+        width: 39
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c8ec765411d13c320800000000000000
+      internalID: 2576935371802136204
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_alien_raider_shooter_spritesheet_10
+      rect:
+        serializedVersion: 2
+        x: 181
+        y: 83
+        width: 39
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9a7f2a0b796232870800000000000000
+      internalID: 8656805341681612713
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_alien_raider_shooter_spritesheet_11
+      rect:
+        serializedVersion: 2
+        x: 261
+        y: 83
+        width: 41
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4737b00b8beb98040800000000000000
+      internalID: 4650457790673548148
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_alien_raider_shooter_spritesheet_12
+      rect:
+        serializedVersion: 2
+        x: 21
+        y: 3
+        width: 39
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1e1c8923394f1a230800000000000000
+      internalID: 3648466086193054177
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_alien_raider_shooter_spritesheet_13
+      rect:
+        serializedVersion: 2
+        x: 101
+        y: 3
+        width: 39
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: df209e043a9967f90800000000000000
+      internalID: -6956203647979420931
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_alien_raider_shooter_spritesheet_14
+      rect:
+        serializedVersion: 2
+        x: 181
+        y: 3
+        width: 39
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c21bfdf8299a216c0800000000000000
+      internalID: -4174087457674907348
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_alien_raider_shooter_spritesheet_15
+      rect:
+        serializedVersion: 2
+        x: 261
+        y: 3
+        width: 39
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c004e57c8a5f54020800000000000000
+      internalID: 2325534887854882828
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      enemy_alien_raider_shooter_spritesheet_0: 6580906483835555453
+      enemy_alien_raider_shooter_spritesheet_1: 2286780581499065744
+      enemy_alien_raider_shooter_spritesheet_10: 8656805341681612713
+      enemy_alien_raider_shooter_spritesheet_11: 4650457790673548148
+      enemy_alien_raider_shooter_spritesheet_12: 3648466086193054177
+      enemy_alien_raider_shooter_spritesheet_13: -6956203647979420931
+      enemy_alien_raider_shooter_spritesheet_14: -4174087457674907348
+      enemy_alien_raider_shooter_spritesheet_15: 2325534887854882828
+      enemy_alien_raider_shooter_spritesheet_2: -6842514946386280734
+      enemy_alien_raider_shooter_spritesheet_3: -5490478131757482058
+      enemy_alien_raider_shooter_spritesheet_4: -4630468780869394020
+      enemy_alien_raider_shooter_spritesheet_5: 5477646239084634787
+      enemy_alien_raider_shooter_spritesheet_6: 7355064755777558071
+      enemy_alien_raider_shooter_spritesheet_7: -28936493691238926
+      enemy_alien_raider_shooter_spritesheet_8: -5184089485791040949
+      enemy_alien_raider_shooter_spritesheet_9: 2576935371802136204
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
