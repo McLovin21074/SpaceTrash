@@ -21,7 +21,9 @@ public class Health : MonoBehaviour, IDamagable
     {
         if (Current <= 0) return;
         Current -= Mathf.Max(1, amount);
-        if(Current <= 0) onDeath?.Invoke();
+        Debug.Log($"[Health] {name} took {amount}, now {Current}/{maxHp}");
+        if (Current <= 0) onDeath?.Invoke();
+
     }
 
     public void SetMaxFromSO(int value)

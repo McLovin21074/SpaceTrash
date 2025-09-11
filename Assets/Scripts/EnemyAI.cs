@@ -57,6 +57,8 @@ public class EnemyAI : MonoBehaviour
         {
             health.onDeath.AddListener(OnDeath);
         }
+        Debug.Log($"[EnemyAI] {name} HP set to {health.Current} (baseHp={baseHp})");
+
     }
 
     private void OnDestroy()
@@ -74,15 +76,15 @@ public class EnemyAI : MonoBehaviour
         agent.SetDestination(player.position);
     }
 
-private void TryDamage(GameObject go) {
-    if (Time.time < nextDamageTime) return;
-    var h = go.GetComponent<Health>();
-    if (h != null) {
-        h.TakeDamage(currentDamage);
-        nextDamageTime = Time.time + contactDamageCooldown;
-        Debug.Log($"Slime hit {go.name} for {currentDamage}. Target HP now: {h.Current}");
+    private void TryDamage(GameObject go) {
+        if (Time.time < nextDamageTime) return;
+        var h = go.GetComponent<Health>();
+        if (h != null) {
+            h.TakeDamage(currentDamage);
+            nextDamageTime = Time.time + contactDamageCooldown;
+            Debug.Log($"Slime hit {go.name} for {currentDamage}. Target HP now: {h.Current}");
+        }
     }
-}
 
 private void OnTriggerStay2D(Collider2D other) => TryDamage(other.gameObject);
 private void OnCollisionStay2D(Collision2D col) => TryDamage(col.collider.gameObject);

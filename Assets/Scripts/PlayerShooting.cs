@@ -44,6 +44,7 @@ public class PlayerShooting : MonoBehaviour
         float range = stats != null ? stats.bulletRange : 8f;
         int damage = stats != null ? stats.bulletDamage : 1;
         float size = stats != null ? stats.bulletSize : 1f;
+        Debug.Log($"[Shoot] SO={(stats ? stats.name : "null")} dmg={damage} cnt={count} spd={speed} rng={range}");
 
         Vector3 origin = firePoint != null ? firePoint.position : transform.position;
 
