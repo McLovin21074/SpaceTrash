@@ -4,8 +4,8 @@ using UnityEngine.AI;
 public class EnemyAI : MonoBehaviour
 {
     [Header("Stats")]
-    [SerializeField] private int baseHp = 5;
-    [SerializeField] private int baseDamage = 1;
+    [SerializeField] private int baseHp = 1000;
+    [SerializeField] private int baseDamage = 12;
     [SerializeField] private float baseMoveSpeed = 3.5f;
 
     [Header("Melee")]
@@ -74,35 +74,18 @@ public class EnemyAI : MonoBehaviour
         agent.SetDestination(player.position);
     }
 
-    private void OnTriggerStay2D(Collider2D other)
-    {
-        if (Time.time < nextDamageTime) return;
-
-        if (other.CompareTag(playerTag) || other.GetComponent<Player>() != null)
-        {
-            var dmg = other.GetComponent<IDamagable>();
-            if (dmg != null)
-            {
-                dmg.TakeDamage(currentDamage);
-                nextDamageTime = Time.time + contactDamageCooldown;
-            }
-        }
+private void TryDamage(GameObject go) {
+    if (Time.time < nextDamageTime) return;
+    var h = go.GetComponent<Health>();
+    if (h != null) {
+        h.TakeDamage(currentDamage);
+        nextDamageTime = Time.time + contactDamageCooldown;
+        Debug.Log($"Slime hit {go.name} for {currentDamage}. Target HP now: {h.Current}");
     }
+}
 
-    private void OnCollisionStay2D(Collision2D collision)
-    {
-        if (Time.time < nextDamageTime) return;
-
-        if (collision.collider.CompareTag(playerTag) || collision.collider.GetComponent<Player>() != null)
-        {
-            var dmg = collision.collider.GetComponent<IDamagable>();
-            if (dmg != null)
-            {
-                dmg.TakeDamage(currentDamage);
-                nextDamageTime = Time.time + contactDamageCooldown;
-            }
-        }
-    }
+private void OnTriggerStay2D(Collider2D other) => TryDamage(other.gameObject);
+private void OnCollisionStay2D(Collision2D col) => TryDamage(col.collider.gameObject);
 
     private void OnDeath()
     {

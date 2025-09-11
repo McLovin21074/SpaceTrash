@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
+    [SerializeField] private string ignoreTag;
     [SerializeField] private LayerMask obstacleMask;
     [SerializeField] private float speed = 12f;
     [SerializeField] private float range = 8f;
@@ -46,19 +47,20 @@ public class Bullet : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (!gameObject.activeInHierarchy) return;
+        if (!string.IsNullOrEmpty(ignoreTag) && other.CompareTag(ignoreTag)) return;
 
         if (((1 << other.gameObject.layer) & obstacleMask) != 0)
         {
-            ReturnToPool();
-            return;
+            ReturnToPool(); return;
         }
 
         var dmg = other.GetComponent<IDamagable>();
         if (dmg != null)
         {
             dmg.TakeDamage(damage);
+            Debug.Log($"Bullet dealt {damage} to {other.name}");
             ReturnToPool();
-        }
+        }                                
     }
 
     public void ReturnToPool()
