@@ -18,6 +18,6 @@ MonoBehaviour:
   bulletSpeed: 10
   bulletRange: 8
   bulletDamage: 1
-  bulletCount: 3
+  bulletCount: 1
   bulletSize: 4
   spreadDeg: 0
