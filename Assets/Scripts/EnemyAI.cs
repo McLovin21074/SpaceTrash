@@ -78,6 +78,7 @@ public class EnemyAI : MonoBehaviour
 
     private void TryDamage(GameObject go) {
         if (Time.time < nextDamageTime) return;
+        if (!go.CompareTag(playerTag)) return;
         var h = go.GetComponent<Health>();
         if (h != null) {
             h.TakeDamage(currentDamage);
