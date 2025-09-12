@@ -192,22 +192,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spriteRenderer: {fileID: 3223522160428704583}
-  idleUp: {fileID: -2396485882697611689, guid: b7014959c5c73a44d8a994c11a59d123, type: 3}
-  idleDown: {fileID: -2396485882697611689, guid: b7014959c5c73a44d8a994c11a59d123, type: 3}
-  idleLeft: {fileID: -2396485882697611689, guid: b7014959c5c73a44d8a994c11a59d123, type: 3}
-  idleRight: {fileID: -2396485882697611689, guid: b7014959c5c73a44d8a994c11a59d123, type: 3}
+  idleUp: {fileID: -5865035420617076125, guid: 4db9240b31a92db4b91448340374ec37, type: 3}
+  idleDown: {fileID: -7450056478188816620, guid: 4db9240b31a92db4b91448340374ec37, type: 3}
+  idleLeft: {fileID: -1536934759933613592, guid: 4db9240b31a92db4b91448340374ec37, type: 3}
+  idleRight: {fileID: -1207879569445579669, guid: 4db9240b31a92db4b91448340374ec37, type: 3}
   walkUp:
-  - {fileID: 505726335636939427, guid: b7014959c5c73a44d8a994c11a59d123, type: 3}
-  - {fileID: 7524308465086823479, guid: b7014959c5c73a44d8a994c11a59d123, type: 3}
+  - {fileID: -3194188701924441980, guid: 4db9240b31a92db4b91448340374ec37, type: 3}
+  - {fileID: -7183174373164453462, guid: 4db9240b31a92db4b91448340374ec37, type: 3}
   walkDown:
-  - {fileID: 505726335636939427, guid: b7014959c5c73a44d8a994c11a59d123, type: 3}
-  - {fileID: 7524308465086823479, guid: b7014959c5c73a44d8a994c11a59d123, type: 3}
+  - {fileID: -8092342898304319125, guid: 4db9240b31a92db4b91448340374ec37, type: 3}
+  - {fileID: 3924872802971934005, guid: 4db9240b31a92db4b91448340374ec37, type: 3}
   walkLeft:
-  - {fileID: 505726335636939427, guid: b7014959c5c73a44d8a994c11a59d123, type: 3}
-  - {fileID: 7524308465086823479, guid: b7014959c5c73a44d8a994c11a59d123, type: 3}
+  - {fileID: -1536934759933613592, guid: 4db9240b31a92db4b91448340374ec37, type: 3}
+  - {fileID: -3152972642421639180, guid: 4db9240b31a92db4b91448340374ec37, type: 3}
   walkRight:
-  - {fileID: 505726335636939427, guid: b7014959c5c73a44d8a994c11a59d123, type: 3}
-  - {fileID: 7524308465086823479, guid: b7014959c5c73a44d8a994c11a59d123, type: 3}
+  - {fileID: -1207879569445579669, guid: 4db9240b31a92db4b91448340374ec37, type: 3}
+  - {fileID: 6289629352749284815, guid: 4db9240b31a92db4b91448340374ec37, type: 3}
   framesPerSecond: 6
   moveEpsilon: 0.01
 --- !u!114 &126298009315312412
@@ -222,9 +222,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94b586520c011dd4daea1bdf67fcde9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseHp: 10
-  baseDamage: 1
-  baseMoveSpeed: 3.5
+  baseHp: 15
+  baseDamage: 2
+  baseMoveSpeed: 3
   contactDamageCooldown: 0.5
   playerTag: Player
 --- !u!114 &5545252844902487853

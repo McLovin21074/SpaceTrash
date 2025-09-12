@@ -1,0 +1,676 @@
+fileFormatVersion: 2
+guid: 4db9240b31a92db4b91448340374ec37
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -7450056478188816620
+    second: enemy_melee_robot_big_dir_112px_walkonly_0
+  - first:
+      213: -8092342898304319125
+    second: enemy_melee_robot_big_dir_112px_walkonly_1
+  - first:
+      213: -8093214378047896895
+    second: enemy_melee_robot_big_dir_112px_walkonly_2
+  - first:
+      213: 3924872802971934005
+    second: enemy_melee_robot_big_dir_112px_walkonly_3
+  - first:
+      213: 231078265838170410
+    second: enemy_melee_robot_big_dir_112px_walkonly_4
+  - first:
+      213: -1536934759933613592
+    second: enemy_melee_robot_big_dir_112px_walkonly_5
+  - first:
+      213: -3152972642421639180
+    second: enemy_melee_robot_big_dir_112px_walkonly_6
+  - first:
+      213: -9085112605484829688
+    second: enemy_melee_robot_big_dir_112px_walkonly_7
+  - first:
+      213: 6570956193429490485
+    second: enemy_melee_robot_big_dir_112px_walkonly_8
+  - first:
+      213: -4485142672911313980
+    second: enemy_melee_robot_big_dir_112px_walkonly_9
+  - first:
+      213: -1207879569445579669
+    second: enemy_melee_robot_big_dir_112px_walkonly_10
+  - first:
+      213: 6289629352749284815
+    second: enemy_melee_robot_big_dir_112px_walkonly_11
+  - first:
+      213: -7299038760618746681
+    second: enemy_melee_robot_big_dir_112px_walkonly_12
+  - first:
+      213: 7884890177824231109
+    second: enemy_melee_robot_big_dir_112px_walkonly_13
+  - first:
+      213: 4018444264773364401
+    second: enemy_melee_robot_big_dir_112px_walkonly_14
+  - first:
+      213: -5865035420617076125
+    second: enemy_melee_robot_big_dir_112px_walkonly_15
+  - first:
+      213: -3194188701924441980
+    second: enemy_melee_robot_big_dir_112px_walkonly_16
+  - first:
+      213: 8103990017935239720
+    second: enemy_melee_robot_big_dir_112px_walkonly_17
+  - first:
+      213: -7183174373164453462
+    second: enemy_melee_robot_big_dir_112px_walkonly_18
+  - first:
+      213: -8705917572444201794
+    second: enemy_melee_robot_big_dir_112px_walkonly_19
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: enemy_melee_robot_big_dir_112px_walkonly_0
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 338
+        width: 83
+        height: 93
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 41735fcea151c9890800000000000000
+      internalID: -7450056478188816620
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_melee_robot_big_dir_112px_walkonly_1
+      rect:
+        serializedVersion: 2
+        x: 127
+        y: 339
+        width: 83
+        height: 93
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b618ae1520932bf80800000000000000
+      internalID: -8092342898304319125
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_melee_robot_big_dir_112px_walkonly_2
+      rect:
+        serializedVersion: 2
+        x: 171
+        y: 337
+        width: 21
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1c20f5127602faf80800000000000000
+      internalID: -8093214378047896895
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_melee_robot_big_dir_112px_walkonly_3
+      rect:
+        serializedVersion: 2
+        x: 239
+        y: 337
+        width: 83
+        height: 93
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 53ddbb9f403f77630800000000000000
+      internalID: 3924872802971934005
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_melee_robot_big_dir_112px_walkonly_4
+      rect:
+        serializedVersion: 2
+        x: 259
+        y: 335
+        width: 21
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a21f89e5574f43300800000000000000
+      internalID: 231078265838170410
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_melee_robot_big_dir_112px_walkonly_5
+      rect:
+        serializedVersion: 2
+        x: 13
+        y: 226
+        width: 87
+        height: 93
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8e9e4379af5bbaae0800000000000000
+      internalID: -1536934759933613592
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_melee_robot_big_dir_112px_walkonly_6
+      rect:
+        serializedVersion: 2
+        x: 125
+        y: 227
+        width: 87
+        height: 93
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4f7feed36146e34d0800000000000000
+      internalID: -3152972642421639180
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_melee_robot_big_dir_112px_walkonly_7
+      rect:
+        serializedVersion: 2
+        x: 173
+        y: 225
+        width: 21
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 80437a568323be180800000000000000
+      internalID: -9085112605484829688
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_melee_robot_big_dir_112px_walkonly_8
+      rect:
+        serializedVersion: 2
+        x: 237
+        y: 225
+        width: 87
+        height: 93
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 53b8400f7d9b03b50800000000000000
+      internalID: 6570956193429490485
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_melee_robot_big_dir_112px_walkonly_9
+      rect:
+        serializedVersion: 2
+        x: 257
+        y: 223
+        width: 21
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4c3dc26908291c1c0800000000000000
+      internalID: -4485142672911313980
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_melee_robot_big_dir_112px_walkonly_10
+      rect:
+        serializedVersion: 2
+        x: 17
+        y: 114
+        width: 79
+        height: 93
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b649eb36eefbc3fe0800000000000000
+      internalID: -1207879569445579669
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_melee_robot_big_dir_112px_walkonly_11
+      rect:
+        serializedVersion: 2
+        x: 129
+        y: 115
+        width: 79
+        height: 93
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fcdbd7b8290494750800000000000000
+      internalID: 6289629352749284815
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_melee_robot_big_dir_112px_walkonly_12
+      rect:
+        serializedVersion: 2
+        x: 169
+        y: 113
+        width: 21
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7cc138f4bea94ba90800000000000000
+      internalID: -7299038760618746681
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_melee_robot_big_dir_112px_walkonly_13
+      rect:
+        serializedVersion: 2
+        x: 241
+        y: 113
+        width: 79
+        height: 93
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5ce0e2e37d1cc6d60800000000000000
+      internalID: 7884890177824231109
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_melee_robot_big_dir_112px_walkonly_14
+      rect:
+        serializedVersion: 2
+        x: 261
+        y: 111
+        width: 21
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1baa587a4c164c730800000000000000
+      internalID: 4018444264773364401
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_melee_robot_big_dir_112px_walkonly_15
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 2
+        width: 83
+        height: 93
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3621907fb553b9ea0800000000000000
+      internalID: -5865035420617076125
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_melee_robot_big_dir_112px_walkonly_16
+      rect:
+        serializedVersion: 2
+        x: 127
+        y: 3
+        width: 83
+        height: 93
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4804a349c46fba3d0800000000000000
+      internalID: -3194188701924441980
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_melee_robot_big_dir_112px_walkonly_17
+      rect:
+        serializedVersion: 2
+        x: 171
+        y: 1
+        width: 21
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 82a675a0cf7277070800000000000000
+      internalID: 8103990017935239720
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_melee_robot_big_dir_112px_walkonly_18
+      rect:
+        serializedVersion: 2
+        x: 239
+        y: 1
+        width: 83
+        height: 93
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aa1f7d737fc305c90800000000000000
+      internalID: -7183174373164453462
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_melee_robot_big_dir_112px_walkonly_19
+      rect:
+        serializedVersion: 2
+        x: 259
+        y: 0
+        width: 21
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ebcd1a2081e5e2780800000000000000
+      internalID: -8705917572444201794
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      enemy_melee_robot_big_dir_112px_walkonly_0: -7450056478188816620
+      enemy_melee_robot_big_dir_112px_walkonly_1: -8092342898304319125
+      enemy_melee_robot_big_dir_112px_walkonly_10: -1207879569445579669
+      enemy_melee_robot_big_dir_112px_walkonly_11: 6289629352749284815
+      enemy_melee_robot_big_dir_112px_walkonly_12: -7299038760618746681
+      enemy_melee_robot_big_dir_112px_walkonly_13: 7884890177824231109
+      enemy_melee_robot_big_dir_112px_walkonly_14: 4018444264773364401
+      enemy_melee_robot_big_dir_112px_walkonly_15: -5865035420617076125
+      enemy_melee_robot_big_dir_112px_walkonly_16: -3194188701924441980
+      enemy_melee_robot_big_dir_112px_walkonly_17: 8103990017935239720
+      enemy_melee_robot_big_dir_112px_walkonly_18: -7183174373164453462
+      enemy_melee_robot_big_dir_112px_walkonly_19: -8705917572444201794
+      enemy_melee_robot_big_dir_112px_walkonly_2: -8093214378047896895
+      enemy_melee_robot_big_dir_112px_walkonly_3: 3924872802971934005
+      enemy_melee_robot_big_dir_112px_walkonly_4: 231078265838170410
+      enemy_melee_robot_big_dir_112px_walkonly_5: -1536934759933613592
+      enemy_melee_robot_big_dir_112px_walkonly_6: -3152972642421639180
+      enemy_melee_robot_big_dir_112px_walkonly_7: -9085112605484829688
+      enemy_melee_robot_big_dir_112px_walkonly_8: 6570956193429490485
+      enemy_melee_robot_big_dir_112px_walkonly_9: -4485142672911313980
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
