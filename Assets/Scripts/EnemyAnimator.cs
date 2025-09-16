@@ -18,7 +18,7 @@ public class EnemyAnimator : MonoBehaviour
     [SerializeField] private Sprite[] walkLeft = new Sprite[2];
     [SerializeField] private Sprite[] walkRight = new Sprite[2];
 
-    [Header("Playback")] 
+    [Header("Playback")]
     [SerializeField, Min(0f)] private float framesPerSecond = 6f;
     [SerializeField, Min(0f)] private float moveEpsilon = 0.01f;
 
