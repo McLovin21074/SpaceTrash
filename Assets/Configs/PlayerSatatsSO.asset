@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 6
   maxHP: 5
-  fireRate: 1
+  fireRate: 5
   bulletSpeed: 10
   bulletRange: 8
   bulletDamage: 1
