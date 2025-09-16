@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 8299669993124619547}
   - component: {fileID: 5545252844902487853}
   - component: {fileID: 2224994589358473981}
+  - component: {fileID: 5553130271550956667}
   m_Layer: 7
   m_Name: RobotShooter
   m_TagString: Enemy
@@ -248,7 +249,7 @@ MonoBehaviour:
   bulletDamage: 1
   bulletSpeed: 10
   bulletRange: 10
-  bulletSize: 1
+  bulletSize: 5
   bulletCount: 1
   spreadDeg: 0
   firePoint: {fileID: 2955382724024665300}
@@ -257,6 +258,18 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   requireLineOfSight: 1
+--- !u!114 &5553130271550956667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1414157174135005010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5dce5a014bd6df498725b87489efefa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6796277241375969985
 GameObject:
   m_ObjectHideFlags: 0
