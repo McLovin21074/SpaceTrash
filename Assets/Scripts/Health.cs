@@ -11,6 +11,7 @@ public class Health : MonoBehaviour, IDamagable
     [SerializeField] private int maxHp = 5;
     public UnityEvent onDeath;
     public int Current {  get; private set; }
+     public int Max => maxHp;
 
     private void Awake()
     {
