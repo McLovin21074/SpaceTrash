@@ -9,7 +9,7 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private float baseMoveSpeed = 3.5f;
 
     [Header("Melee")]
-    [SerializeField] private float contactDamageCooldown = 0.5f;
+    [SerializeField] private float contactDamageCooldown = 1.0f;
     [SerializeField] private string playerTag = "Player";
 
     private Transform player;
