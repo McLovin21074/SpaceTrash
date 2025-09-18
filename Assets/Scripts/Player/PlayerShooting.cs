@@ -10,6 +10,9 @@ public class PlayerShooting : MonoBehaviour
 
     public PlayerSatatsSO Stats => stats;
 
+    public void OverrideStats(PlayerSatatsSO s) { stats = s; }
+
+
     private void Awake()
     {
         if (pool == null) pool = BulletPool.Instance;

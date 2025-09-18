@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 5545252844902487853}
   - component: {fileID: 2224994589358473981}
   - component: {fileID: 5553130271550956667}
+  - component: {fileID: 2567352934438343611}
   m_Layer: 7
   m_Name: RobotShooter
   m_TagString: Enemy
@@ -228,6 +229,8 @@ MonoBehaviour:
   onDeath:
     m_PersistentCalls:
       m_Calls: []
+  damageFlashColor: {r: 1, g: 0, b: 0, a: 0.6}
+  damageFlashDuration: 0.15
 --- !u!114 &2224994589358473981
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -270,6 +273,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5dce5a014bd6df498725b87489efefa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2567352934438343611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1414157174135005010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a0fe39ca93ca8b4faf7892527cc70d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coinsMin: 1
+  coinsMax: 3
+  expMin: 1
+  expMax: 2
 --- !u!1 &6796277241375969985
 GameObject:
   m_ObjectHideFlags: 0

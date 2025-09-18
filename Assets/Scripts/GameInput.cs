@@ -14,6 +14,16 @@ public class GameInput : MonoBehaviour
         playerInputAction.Enable();
     }
 
+        private void OnDisable()
+    {
+        if (playerInputAction != null) playerInputAction.Disable();
+    }
+
+    private void OnDestroy()
+    {
+        if (playerInputAction != null) playerInputAction.Disable();
+    }
+
     public Vector2 GetMovementVector()
     {
         Vector2 inputVector = playerInputAction.Player.Move.ReadValue<Vector2>();
