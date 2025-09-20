@@ -103,32 +103,53 @@ public class UpgradeManager : MonoBehaviour
         SaveLevel(t);
         return true;
     }
+    
+    public string GetTitle(UpgradeType t)
+{
+    var cfg = Get(t);
+    if (cfg != null && !string.IsNullOrWhiteSpace(cfg.title))
+        return cfg.title;
+
+    return t switch
+    {
+        UpgradeType.MoveSpeed    => "Скорость",
+        UpgradeType.MaxHP        => "Здоровье",
+        UpgradeType.FireRate     => "Скорострельность",
+        UpgradeType.BulletSpeed  => "Скорость снаряда",
+        UpgradeType.BulletRange  => "Дальность",
+        UpgradeType.BulletDamage => "Урон",
+        UpgradeType.BulletSize   => "Размер пули",
+        UpgradeType.BulletCount  => "Кол-во пуль",
+        _ => t.ToString()
+    };
+}
+
 
     public void ApplyTo(PlayerSatatsSO rt)
     {
         if (!rt) return;
 
-        rt.moveSpeed    += Get(UpgradeType.MoveSpeed)?.addValue   * GetLevel(UpgradeType.MoveSpeed)   ?? 0f;
-        rt.maxHP        += Mathf.RoundToInt((Get(UpgradeType.MaxHP)?.addValue ?? 0f) * GetLevel(UpgradeType.MaxHP));
-        rt.fireRate     += Get(UpgradeType.FireRate)?.addValue    * GetLevel(UpgradeType.FireRate)    ?? 0f;
-        rt.bulletSpeed  += Get(UpgradeType.BulletSpeed)?.addValue * GetLevel(UpgradeType.BulletSpeed) ?? 0f;
-        rt.bulletRange  += Get(UpgradeType.BulletRange)?.addValue * GetLevel(UpgradeType.BulletRange) ?? 0f;
+        rt.moveSpeed += Get(UpgradeType.MoveSpeed)?.addValue * GetLevel(UpgradeType.MoveSpeed) ?? 0f;
+        rt.maxHP += Mathf.RoundToInt((Get(UpgradeType.MaxHP)?.addValue ?? 0f) * GetLevel(UpgradeType.MaxHP));
+        rt.fireRate += Get(UpgradeType.FireRate)?.addValue * GetLevel(UpgradeType.FireRate) ?? 0f;
+        rt.bulletSpeed += Get(UpgradeType.BulletSpeed)?.addValue * GetLevel(UpgradeType.BulletSpeed) ?? 0f;
+        rt.bulletRange += Get(UpgradeType.BulletRange)?.addValue * GetLevel(UpgradeType.BulletRange) ?? 0f;
         rt.bulletDamage += Mathf.RoundToInt((Get(UpgradeType.BulletDamage)?.addValue ?? 0f) * GetLevel(UpgradeType.BulletDamage));
 
         if (IsUnlocked(UpgradeType.BulletSize))
-            rt.bulletSize  += Get(UpgradeType.BulletSize)?.addValue  * GetLevel(UpgradeType.BulletSize)  ?? 0f;
+            rt.bulletSize += Get(UpgradeType.BulletSize)?.addValue * GetLevel(UpgradeType.BulletSize) ?? 0f;
 
         if (IsUnlocked(UpgradeType.BulletCount))
             rt.bulletCount += Mathf.RoundToInt((Get(UpgradeType.BulletCount)?.addValue ?? 0f) * GetLevel(UpgradeType.BulletCount));
 
         // Страховки
-        rt.moveSpeed    = Mathf.Max(0.1f, rt.moveSpeed);
-        rt.fireRate     = Mathf.Max(0.01f, rt.fireRate);
-        rt.bulletSpeed  = Mathf.Max(0.1f, rt.bulletSpeed);
-        rt.bulletRange  = Mathf.Max(0.1f, rt.bulletRange);
-        rt.bulletSize   = Mathf.Max(0.01f, rt.bulletSize);
-        rt.bulletCount  = Mathf.Max(1,    rt.bulletCount);
-        rt.maxHP        = Mathf.Max(1,    rt.maxHP);
-        rt.bulletDamage = Mathf.Max(1,    rt.bulletDamage);
+        rt.moveSpeed = Mathf.Max(0.1f, rt.moveSpeed);
+        rt.fireRate = Mathf.Max(0.01f, rt.fireRate);
+        rt.bulletSpeed = Mathf.Max(0.1f, rt.bulletSpeed);
+        rt.bulletRange = Mathf.Max(0.1f, rt.bulletRange);
+        rt.bulletSize = Mathf.Max(0.01f, rt.bulletSize);
+        rt.bulletCount = Mathf.Max(1, rt.bulletCount);
+        rt.maxHP = Mathf.Max(1, rt.maxHP);
+        rt.bulletDamage = Mathf.Max(1, rt.bulletDamage);
     }
 }

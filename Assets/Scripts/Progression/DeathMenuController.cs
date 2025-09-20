@@ -7,9 +7,10 @@ public class DeathMenuController : MonoBehaviour
 {
     [Header("Refs")]
     [SerializeField] private GameObject panel;
-    [SerializeField] private Text coinsText;    // или TMP_Text
-    [SerializeField] private Text expText;      // или TMP_Text
+    [SerializeField] private Text coinsText;    
+    [SerializeField] private Text expText;     
     [SerializeField] private Button bossButton;
+    [SerializeField] private UnityEngine.UI.Slider expSlider; 
 
     [Header("Buttons per-upgrade")]
     [SerializeField] private UpgradeButton[] upgradeButtons;
@@ -18,28 +19,9 @@ public class DeathMenuController : MonoBehaviour
     {
         if (panel) panel.SetActive(false);
 
-        // привяжем onClick ко всем кнопкам апгрейдов
-        if (upgradeButtons != null)
-        {
-            foreach (var ub in upgradeButtons)
-            {
-                if (ub != null && ub.buyButton != null)
-                {
-                    var capture = ub; // замыкание!
-                    ub.buyButton.onClick.RemoveAllListeners();
-                    ub.buyButton.onClick.AddListener(() =>
-                    {
-                        if (UpgradeManager.Instance != null && capture != null)
-                        {
-                            if (UpgradeManager.Instance.TryBuy(capture.type))
-                                Refresh();
-                            else
-                                capture.Refresh(); // обновим надпись/доступность
-                        }
-                    });
-                }
-            }
-        }
+            if (upgradeButtons != null)
+                foreach (var ub in upgradeButtons)
+                    if (ub != null) ub.Bind();
     }
 
 
@@ -58,7 +40,7 @@ public class DeathMenuController : MonoBehaviour
     public void Show()
     {
         panel.SetActive(true);
-        Time.timeScale = 0f; // чтобы игра встала
+        Time.timeScale = 0f; 
         Refresh();
     }
 
@@ -68,7 +50,7 @@ public class DeathMenuController : MonoBehaviour
         Time.timeScale = 1f;
     }
 
-    public void OnContinue() // «Продолжить» — начинаем новый забег
+    public void OnContinue() 
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
@@ -76,24 +58,32 @@ public class DeathMenuController : MonoBehaviour
 
     public void OnFightBoss()
     {
-        // пока заглушка
         Debug.Log("Boss fight not implemented yet.");
     }
 
-    private void Refresh()
+    public void Refresh()
     {
-        if (MetaProgression.Instance)
+        var mp = MetaProgression.Instance;
+
+        if (mp != null)
         {
-            if (coinsText) coinsText.text = $"Монеты: {MetaProgression.Instance.Coins}";
-            if (expText)   expText.text   = $"Опыт: {MetaProgression.Instance.Exp} / {MetaProgression.Instance.BossUnlockExp}";
-            if (bossButton) bossButton.interactable = MetaProgression.Instance.BossUnlocked;
+            if (coinsText) coinsText.text = $"Монеты: {mp.Coins}";
+            if (expText)   expText.text   = $"Опыт: {mp.Exp} / {mp.BossUnlockExp}";
+            if (bossButton) bossButton.interactable = mp.BossUnlocked;
+
+            if (expSlider)
+            {
+                expSlider.minValue = 0f;
+                expSlider.maxValue = Mathf.Max(1, mp.BossUnlockExp);
+                expSlider.value    = Mathf.Clamp(mp.Exp, 0, mp.BossUnlockExp);
+            }
         }
 
-        foreach (var ub in upgradeButtons)
-        {
-            if (ub != null) ub.Refresh();   // <- вот так
-        }
+        if (upgradeButtons != null)
+            foreach (var ub in upgradeButtons)
+                if (ub != null) ub.Refresh();
     }
+
 
 }
 
@@ -101,40 +91,56 @@ public class DeathMenuController : MonoBehaviour
 public class UpgradeButton
 {
     public UpgradeType type;
-    public Text label;  // "Скорость L3  (стоимость 25)" — или TMP_Text
-    public Button buyButton;
 
-public void Refresh()
-{
-    var um = UpgradeManager.Instance;
-    var mp = MetaProgression.Instance;
-    if (label == null || buyButton == null || um == null || mp == null)
+    // Ссылки
+    public Button buyButton;
+    public UnityEngine.UI.Text titleText;   
+    public UnityEngine.UI.Text priceText;  
+    public UnityEngine.UI.Image coinIcon;   
+
+    public void Bind()
     {
-        if (label) label.text = $"{type}  — недоступно";
-        if (buyButton) buyButton.interactable = false;
-        return;
+        if (buyButton == null) return;
+        buyButton.onClick.RemoveAllListeners();
+        buyButton.onClick.AddListener(() =>
+        {
+            var um = UpgradeManager.Instance;
+            if (um != null && um.TryBuy(type))
+            {
+
+                var ctrl = GameObject.FindFirstObjectByType<DeathMenuController>(FindObjectsInactive.Include);
+                if (ctrl) ctrl.Refresh();
+            }
+            else
+            {
+                Refresh();
+            }
+        });
     }
 
-    int lvl = um.GetLevel(type);
-    bool unlocked = um.IsUnlocked(type);
-    bool maxed = um.IsMaxed(type);
-
-    string pricePart = "";
-    if (!maxed && unlocked)
-        pricePart = $" (цена {um.GetPrice(type)})";
-
-    if (!unlocked) pricePart = "  [🔒 по опыту]";
-    if (maxed)     pricePart = " (MAX)";
-
-    label.text = $"{type}  L{lvl}{pricePart}";
-    buyButton.interactable = unlocked && !maxed && mp.Coins >= um.GetPrice(type);
-}
-
-
-    public void Buy()
+    public void Refresh()
     {
         var um = UpgradeManager.Instance;
-        if (um != null && um.TryBuy(type))
-            Refresh();
+        var mp = MetaProgression.Instance;
+        if (um == null || mp == null || buyButton == null) return;
+
+        string niceTitle = um.GetTitle(type);
+        if (titleText) titleText.text = $"{niceTitle}";
+
+        int lvl = um.GetLevel(type);
+        bool unlocked = um.IsUnlocked(type);
+        bool maxed = um.IsMaxed(type);
+        int price = um.GetPrice(type);
+
+        if (priceText)
+        {
+            if (!unlocked)       priceText.text = "🔒";
+            else if (maxed)      priceText.text = "MAX";
+            else                 priceText.text = price.ToString();
+        }
+        if (coinIcon) coinIcon.enabled = unlocked && !maxed;
+
+        buyButton.interactable = unlocked && !maxed && mp.Coins >= price;
     }
 }
+
