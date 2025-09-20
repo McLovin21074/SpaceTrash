@@ -10,8 +10,8 @@ public enum UpgradeType
     BulletSpeed,
     BulletRange,
     BulletDamage,
-    BulletSize,   // можно не использовать сейчас
-    BulletCount   // можно не использовать сейчас
+    BulletSize,  
+    BulletCount  
 }
 
 [System.Serializable]

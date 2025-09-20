@@ -289,6 +289,9 @@ MonoBehaviour:
   coinsMax: 3
   expMin: 1
   expMax: 2
+  coinPrefab: {fileID: 8239298381507024254, guid: 022000ee7fb93a842b9b8fb1a0367aaa, type: 3}
+  maxCoinsShown: 5
+  spawnSpread: 0.25
 --- !u!1 &6796277241375969985
 GameObject:
   m_ObjectHideFlags: 0

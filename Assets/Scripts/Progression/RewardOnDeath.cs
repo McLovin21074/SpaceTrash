@@ -9,6 +9,11 @@ public class RewardOnDeath : MonoBehaviour
     [Min(0)] public int expMin   = 1;
     [Min(0)] public int expMax   = 2;
 
+    [Header("Coin VFX")]
+    [SerializeField] private CoinVFX coinPrefab;
+    [SerializeField, Min(1)] private int maxCoinsShown = 5;
+    [SerializeField] private float spawnSpread = 0.25f;
+
     private Health health;
 
     private void Awake()
@@ -26,10 +31,15 @@ public class RewardOnDeath : MonoBehaviour
     {
         int c = Random.Range(coinsMin, coinsMax + 1);
         int e = Random.Range(expMin,   expMax   + 1);
+
         if (MetaProgression.Instance)
         {
             MetaProgression.Instance.AddCoins(c);
             MetaProgression.Instance.AddExp(e);
         }
+
+        if (CoinVFXManager.Instance)
+            CoinVFXManager.Instance.SpawnVisualCoins(c, transform.position);
     }
+
 }
