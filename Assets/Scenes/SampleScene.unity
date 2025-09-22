@@ -31333,7 +31333,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -253, y: -57.52765}
+  m_AnchoredPosition: {x: -253, y: -57.527588}
   m_SizeDelta: {x: 474.3715, y: 88.9447}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!1 &731975140
@@ -31579,8 +31579,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   waveText: {fileID: 730280776}
   timerText: {fileID: 1449907863}
-  waveFormat: Wave {0}
-  timerFormat: Next wave in {0:0}
+  waveFormat: "\u0412\u043E\u043B\u043D\u0430 \u2116 {0}"
+  timerFormat: "\u041F\u0440\u0438\u0433\u043E\u0442\u043E\u0432\u0438\u0442\u044C\u0441\u044F!
+    {0:0}"
   hideTimerDuringWave: 1
 --- !u!1 &831092623
 GameObject:
@@ -33822,8 +33823,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 119, y: -57.52765}
-  m_SizeDelta: {x: 474.3715, y: 88.9447}
+  m_AnchoredPosition: {x: 163.01782, y: -57.527588}
+  m_SizeDelta: {x: 562.4073, y: 74.9984}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!1 &1468095054
 GameObject:

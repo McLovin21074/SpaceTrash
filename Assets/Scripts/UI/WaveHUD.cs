@@ -6,8 +6,8 @@ public class WaveHUD : MonoBehaviour
 {
     [SerializeField] private Text waveText;
     [SerializeField] private Text timerText;
-    [SerializeField] private string waveFormat = "Wave {0}";
-    [SerializeField] private string timerFormat = "Next wave in {0:0}";
+    [SerializeField] private string waveFormat = "Волна № {0}";
+    [SerializeField] private string timerFormat = "Следующая волна через {0:0}";
     [SerializeField] private bool hideTimerDuringWave = true;
 
     private WaveManager waveManager;
