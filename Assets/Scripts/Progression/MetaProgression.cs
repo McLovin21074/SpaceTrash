@@ -8,15 +8,18 @@ public class MetaProgression : MonoBehaviour
     public static MetaProgression Instance { get; private set; }
 
     [Header("Boss unlock")]
-    [SerializeField] private int bossUnlockExp = 100; // порог опыта для кнопки босса
+    [SerializeField] private int bossUnlockExp = 100; // ?????????? ?????<?'?? ???>?? ?????????? ?+????????
 
     public int Coins { get; private set; }
     public int Exp   { get; private set; }
+    public int MaxWaveReached { get; private set; }
 
     public UnityEvent onValuesChanged;
+    public UnityEvent onBestWaveChanged;
 
-    private const string K_COINS = "mp_coins";
-    private const string K_EXP   = "mp_exp";
+    private const string K_COINS    = "mp_coins";
+    private const string K_EXP      = "mp_exp";
+    private const string K_MAX_WAVE = "mp_max_wave";
 
     private void Awake()
     {
@@ -24,9 +27,12 @@ public class MetaProgression : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
-        Coins = PlayerPrefs.GetInt(K_COINS, 0);
-        Exp   = PlayerPrefs.GetInt(K_EXP,   0);
-        onValuesChanged ??= new UnityEvent();
+        Coins          = PlayerPrefs.GetInt(K_COINS,    0);
+        Exp            = PlayerPrefs.GetInt(K_EXP,      0);
+        MaxWaveReached = PlayerPrefs.GetInt(K_MAX_WAVE, 0);
+
+        onValuesChanged   ??= new UnityEvent();
+        onBestWaveChanged ??= new UnityEvent();
     }
 
     public void AddCoins(int amount)
@@ -52,6 +58,16 @@ public class MetaProgression : MonoBehaviour
         PlayerPrefs.SetInt(K_COINS, Coins);
         onValuesChanged.Invoke();
         return true;
+    }
+
+    public void ReportWaveCleared(int wave)
+    {
+        if (wave <= 0) return;
+        if (wave <= MaxWaveReached) return;
+
+        MaxWaveReached = wave;
+        PlayerPrefs.SetInt(K_MAX_WAVE, MaxWaveReached);
+        onBestWaveChanged.Invoke();
     }
 
     public bool BossUnlocked => Exp >= bossUnlockExp;
