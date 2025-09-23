@@ -28217,6 +28217,14 @@ MonoBehaviour:
   hpBonusPerStep: 0.15
   damageBonusPerStep: 0.1
   speedBonusPerStep: 0.05
+  medkitPrefab: {fileID: 807208709636506906, guid: 88a9c0f0e30d6db4aad5c2537022916d, type: 3}
+  medkitParent: {fileID: 8369761087743899371, guid: 88a9c0f0e30d6db4aad5c2537022916d, type: 3}
+  medkitsMin: 1
+  medkitsMax: 2
+  medkitHealMin: 1
+  medkitHealMax: 2
+  medkitSpawnRadiusMin: 2
+  medkitSpawnRadiusMax: 8
 --- !u!4 &499392103
 Transform:
   m_ObjectHideFlags: 0

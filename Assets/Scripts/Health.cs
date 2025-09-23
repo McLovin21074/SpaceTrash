@@ -10,8 +10,8 @@ public class Health : MonoBehaviour, IDamagable
 {
     [SerializeField] private int maxHp = 5;
     public UnityEvent onDeath;
-    public int Current {  get; private set; }
-     public int Max => maxHp;
+    public int Current { get; private set; }
+    public int Max => maxHp;
 
     [Header("Damage Flash")]
     [SerializeField] private Color damageFlashColor = new Color(1f, 0f, 0f, 0.6f);
@@ -39,16 +39,32 @@ public class Health : MonoBehaviour, IDamagable
     public void TakeDamage(int amount)
     {
         if (Current <= 0) return;
-        Current -= Mathf.Max(1, amount);
-        Debug.Log($"[Health] {name} took {amount}, now {Current}/{maxHp}");
+        int dmg = Mathf.Max(1, amount);
+        int prev = Current;
+        Current = Mathf.Max(0, Current - dmg);
+        Debug.Log($"[Health] {name} took {dmg}, now {Current}/{maxHp}");
         TriggerDamageFlash();
-        if (Current <= 0) onDeath?.Invoke();
+        if (Current <= 0 && prev > 0) onDeath?.Invoke();
+    }
 
+    public bool Heal(int amount)
+    {
+        if (Current <= 0) return false;
+        int heal = Mathf.Max(1, amount);
+        if (Current >= maxHp) return false;
+
+        int prev = Current;
+        Current = Mathf.Min(maxHp, Current + heal);
+        int applied = Current - prev;
+        if (applied <= 0) return false;
+
+        Debug.Log($"[Health] {name} healed {applied}, now {Current}/{maxHp}");
+        return true;
     }
 
     public void SetMaxFromSO(int value)
     {
-        maxHp = value;
+        maxHp = Mathf.Max(1, value);
         Current = maxHp;
     }
 

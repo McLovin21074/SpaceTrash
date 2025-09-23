@@ -15,10 +15,12 @@ public class OffscreenEnemyIndicatorManager : MonoBehaviour
     [Header("Tuning")]
     [SerializeField] private float edgePadding = 32f;
     [SerializeField, Range(0f, 0.2f)] private float onScreenMargin = 0.06f;
-    [SerializeField] private bool useRendererVisibility = true;  // скрывать, если виден хоть пиксель
-    [SerializeField] private float rotationOffsetDeg = -90f;     // твоя стрелка смотрит ВВЕРХ
+    [SerializeField] private bool useRendererVisibility = true;
+    [SerializeField] private float rotationOffsetDeg = -90f;     
 
     private readonly Dictionary<Transform, RectTransform> map = new();
+    private readonly Dictionary<Transform, Graphic[]> indicatorGraphics = new();
+    private readonly Dictionary<Transform, Color> pendingColors = new();
 
     public static OffscreenEnemyIndicatorManager Instance { get; private set; }
 
@@ -38,7 +40,7 @@ public class OffscreenEnemyIndicatorManager : MonoBehaviour
         }
 
         if (!indicatorPrefab)
-            Debug.LogError("[Indicator] indicatorPrefab не назначен на менеджере!");
+            Debug.LogError("[Indicator] indicatorPrefab");
     }
 
     public void Register(Transform target)
@@ -47,10 +49,22 @@ public class OffscreenEnemyIndicatorManager : MonoBehaviour
 
         var inst = Instantiate(indicatorPrefab, canvasRect);
         inst.gameObject.SetActive(false);
-        var img = inst.GetComponent<Image>();
-        if (img) img.raycastTarget = false;
+
+        var graphics = inst.GetComponentsInChildren<Graphic>(includeInactive: true);
+        for (int i = 0; i < graphics.Length; i++)
+        {
+            var g = graphics[i];
+            if (g) g.raycastTarget = false;
+        }
 
         map[target] = inst;
+        indicatorGraphics[target] = graphics;
+
+        if (pendingColors.TryGetValue(target, out var color))
+        {
+            ApplyColor(graphics, color);
+            pendingColors.Remove(target);
+        }
     }
 
     public void Unregister(Transform target)
@@ -60,6 +74,32 @@ public class OffscreenEnemyIndicatorManager : MonoBehaviour
         {
             Destroy(inst.gameObject);
             map.Remove(target);
+        }
+        indicatorGraphics.Remove(target);
+        pendingColors.Remove(target);
+    }
+
+    public void SetIndicatorColor(Transform target, Color color)
+    {
+        if (!target) return;
+
+        if (indicatorGraphics.TryGetValue(target, out var graphics))
+        {
+            ApplyColor(graphics, color);
+        }
+        else
+        {
+            pendingColors[target] = color;
+        }
+    }
+
+    private static void ApplyColor(Graphic[] graphics, Color color)
+    {
+        if (graphics == null) return;
+        for (int i = 0; i < graphics.Length; i++)
+        {
+            var g = graphics[i];
+            if (g) g.color = color;
         }
     }
 
@@ -78,20 +118,17 @@ public class OffscreenEnemyIndicatorManager : MonoBehaviour
 
             if (!t) { ind.gameObject.SetActive(false); continue; }
 
-            // --- проверка видимости
             bool onScreen;
             if (useRendererVisibility)
             {
-                // Берём любой Renderer (в т.ч. SpriteRenderer) у цели или её детей
                 Renderer rend = t.GetComponentInChildren<Renderer>(true);
                 if (rend != null)
                 {
                     var sp = targetCamera.WorldToScreenPoint(t.position);
-                    onScreen = (sp.z > 0f) && rend.isVisible; // виден хотя бы частично
+                    onScreen = (sp.z > 0f) && rend.isVisible; 
                 }
                 else
                 {
-                    // запасной — по центру
                     Vector3 vp = targetCamera.WorldToViewportPoint(t.position);
                     onScreen = vp.z > 0f &&
                                vp.x > onScreenMargin && vp.x < 1f - onScreenMargin &&
@@ -108,7 +145,6 @@ public class OffscreenEnemyIndicatorManager : MonoBehaviour
 
             if (onScreen) { ind.gameObject.SetActive(false); continue; }
 
-            // --- позиция на краю
             Vector3 spTar = targetCamera.WorldToScreenPoint(t.position);
             Vector2 dir   = (Vector2)(spTar - (Vector3)screenCenter);
             if (spTar.z < 0f) dir = -dir;
@@ -117,7 +153,6 @@ public class OffscreenEnemyIndicatorManager : MonoBehaviour
             RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, pos, uiCam, out Vector2 uiPos);
             ind.anchoredPosition = uiPos;
 
-            // --- поворот
             float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg + rotationOffsetDeg;
             ind.localEulerAngles = new Vector3(0, 0, angle);
 

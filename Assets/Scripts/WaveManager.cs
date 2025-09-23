@@ -35,12 +35,23 @@ public class WaveManager : MonoBehaviour
     [SerializeField] private float damageBonusPerStep = 0.1f;
     [SerializeField] private float speedBonusPerStep = 0.05f;
 
+    [Header("Intermission pickups")]
+    [SerializeField] private GameObject medkitPrefab;
+    [SerializeField] private Transform medkitParent;
+    [SerializeField, Min(0)] private int medkitsMin = 1;
+    [SerializeField, Min(0)] private int medkitsMax = 2;
+    [SerializeField, Min(1)] private int medkitHealMin = 1;
+    [SerializeField, Min(1)] private int medkitHealMax = 2;
+    [SerializeField, Min(0f)] private float medkitSpawnRadiusMin = 2f;
+    [SerializeField, Min(0f)] private float medkitSpawnRadiusMax = 8f;
+
     public event Action<int> WaveStarted;
     public event Action<int> WaveCompleted;
     public event Action<float> IntermissionTick;
 
     private readonly Dictionary<Health, UnityAction> deathHandlers = new();
     private readonly List<GameObject> spawnCandidates = new();
+    private readonly List<MedkitPickup> activeMedkits = new();
     private Transform player;
     private Coroutine intermissionRoutine;
     private int currentWave;
@@ -68,6 +79,7 @@ public class WaveManager : MonoBehaviour
     {
         if (Instance == this) Instance = null;
         CleanupTrackedEnemies();
+        CleanupMedkits();
     }
 
     private IEnumerator Start()
@@ -121,6 +133,8 @@ public class WaveManager : MonoBehaviour
 
     private void StartNextWave()
     {
+        CleanupMedkits();
+
         if (enemyPrefabs == null || enemyPrefabs.Count == 0)
         {
             Debug.LogWarning("[WaveManager] No enemy prefabs configured.");
@@ -161,7 +175,7 @@ public class WaveManager : MonoBehaviour
             return;
         }
 
-        Vector3 spawnPos = FindSpawnPosition(origin);
+        Vector3 spawnPos = FindSpawnPosition(origin, spawnRadiusMin, spawnRadiusMax);
         GameObject instance = Instantiate(prefab, spawnPos, Quaternion.identity, enemiesParent);
 
         if (!instance)
@@ -246,11 +260,42 @@ public class WaveManager : MonoBehaviour
 
         if (intermissionDuration > 0f)
         {
+            SpawnIntermissionMedkits();
             intermissionRoutine = StartCoroutine(IntermissionCountdown());
         }
         else
         {
             StartNextWave();
+        }
+    }
+
+    private void SpawnIntermissionMedkits()
+    {
+        if (!medkitPrefab) return;
+
+        int minCount = Mathf.Max(0, Mathf.Min(medkitsMin, medkitsMax));
+        int maxCount = Mathf.Max(minCount, Mathf.Max(medkitsMin, medkitsMax));
+        if (maxCount <= 0) return;
+
+        int spawnCount = UnityEngine.Random.Range(minCount, maxCount + 1);
+        if (spawnCount <= 0) return;
+
+        Vector3 origin = player ? player.position : transform.position;
+        int healMin = Mathf.Max(1, Mathf.Min(medkitHealMin, medkitHealMax));
+        int healMax = Mathf.Max(healMin, Mathf.Max(medkitHealMin, medkitHealMax));
+
+        for (int i = 0; i < spawnCount; i++)
+        {
+            Vector3 spawnPos = FindSpawnPosition(origin, medkitSpawnRadiusMin, medkitSpawnRadiusMax);
+            GameObject instance = Instantiate(medkitPrefab, spawnPos, Quaternion.identity, medkitParent);
+            if (!instance) continue;
+
+            var pickup = instance.GetComponent<MedkitPickup>() ?? instance.AddComponent<MedkitPickup>();
+            pickup.Configure(this, healMin, healMax);
+            if (!instance.GetComponent<EnemyIndicatorTarget>())
+                instance.AddComponent<EnemyIndicatorTarget>();
+
+            activeMedkits.Add(pickup);
         }
     }
 
@@ -265,6 +310,12 @@ public class WaveManager : MonoBehaviour
         }
         IntermissionTick?.Invoke(0f);
         StartNextWave();
+    }
+
+    public void NotifyMedkitRemoved(MedkitPickup pickup)
+    {
+        if (pickup == null) return;
+        activeMedkits.Remove(pickup);
     }
 
     private int CalculateEnemyCount(int wave)
@@ -285,17 +336,16 @@ public class WaveManager : MonoBehaviour
         return (Mathf.Max(0.01f, hpMul), Mathf.Max(0.01f, dmgMul), Mathf.Max(0.01f, spdMul));
     }
 
-    private Vector3 FindSpawnPosition(Vector3 origin)
+    private Vector3 FindSpawnPosition(Vector3 origin, float minRadius, float maxRadius)
     {
-        float minRadius = Mathf.Min(spawnRadiusMin, spawnRadiusMax);
-        float maxRadius = Mathf.Max(spawnRadiusMin, spawnRadiusMax);
+        float min = Mathf.Min(minRadius, maxRadius);
+        float max = Mathf.Max(minRadius, maxRadius);
 
-        if (maxRadius <= 0f)
+        if (max <= 0f)
             return origin;
 
-        minRadius = Mathf.Max(0f, minRadius);
-        if (Mathf.Approximately(maxRadius, 0f))
-            maxRadius = 0.1f;
+        min = Mathf.Max(0f, min);
+        max = Mathf.Max(0.1f, max);
 
         const int maxAttempts = 8;
         float z = origin.z;
@@ -306,7 +356,7 @@ public class WaveManager : MonoBehaviour
             if (dir == Vector2.zero) dir = Vector2.up;
             dir.Normalize();
 
-            float distance = UnityEngine.Random.Range(Mathf.Max(0.1f, minRadius), Mathf.Max(0.1f, maxRadius));
+            float distance = UnityEngine.Random.Range(Mathf.Max(0.1f, min), max);
             Vector3 candidate = origin + new Vector3(dir.x, dir.y, 0f) * distance;
             candidate.z = z;
 
@@ -314,13 +364,13 @@ public class WaveManager : MonoBehaviour
                 return new Vector3(hit.position.x, hit.position.y, z);
         }
 
-        Vector2 fallbackDir2D = UnityEngine.Random.insideUnitCircle;
-        if (fallbackDir2D == Vector2.zero)
-            fallbackDir2D = Vector2.one;
-        fallbackDir2D.Normalize();
+        Vector2 fallbackDir = UnityEngine.Random.insideUnitCircle;
+        if (fallbackDir == Vector2.zero)
+            fallbackDir = Vector2.one;
+        fallbackDir.Normalize();
 
-        float fallbackDist = Mathf.Lerp(Mathf.Max(0.1f, minRadius), Mathf.Max(0.1f, maxRadius), 0.5f);
-        Vector3 fallback = origin + new Vector3(fallbackDir2D.x, fallbackDir2D.y, 0f) * fallbackDist;
+        float fallbackDist = Mathf.Lerp(Mathf.Max(0.1f, min), max, 0.5f);
+        Vector3 fallback = origin + new Vector3(fallbackDir.x, fallbackDir.y, 0f) * fallbackDist;
         fallback.z = z;
         return fallback;
     }
@@ -335,5 +385,17 @@ public class WaveManager : MonoBehaviour
                 kvp.Key.onDeath.RemoveListener(kvp.Value);
         }
         deathHandlers.Clear();
+    }
+
+    private void CleanupMedkits()
+    {
+        if (activeMedkits.Count == 0) return;
+
+        foreach (var pickup in activeMedkits)
+        {
+            if (pickup)
+                Destroy(pickup.gameObject);
+        }
+        activeMedkits.Clear();
     }
 }
