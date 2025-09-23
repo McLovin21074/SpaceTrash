@@ -29,6 +29,14 @@ public class WaveManager : MonoBehaviour
     [SerializeField, Min(0f)] private float spawnRadiusMax = 12f;
     [SerializeField, Min(0.01f)] private float navMeshSampleRadius = 2f;
 
+    [Header("Spawn bounds")]
+    [Tooltip("Optional: Collider2D that encloses the playable area; spawns stay inside it.")]
+    [SerializeField] private Collider2D spawnBoundsCollider;
+    [Tooltip("Optional: Renderer whose bounds define the spawnable area.")]
+    [SerializeField] private Renderer spawnBoundsRenderer;
+    [Tooltip("Enable to use manual world-space bounds when no collider or renderer is set.")]
+    [SerializeField] private bool useManualSpawnBounds = false;
+    [SerializeField] private Rect manualSpawnBounds = new Rect(-10f, -10f, 20f, 20f);
     [Header("Scaling every N waves")]
     [SerializeField, Min(1)] private int wavesPerStatIncrease = 3;
     [SerializeField] private float hpBonusPerStep = 0.15f;
@@ -341,40 +349,155 @@ public class WaveManager : MonoBehaviour
         float min = Mathf.Min(minRadius, maxRadius);
         float max = Mathf.Max(minRadius, maxRadius);
 
+        bool hasBounds = TryGetSpawnBounds(out Bounds spawnBounds);
+        Vector3 clampedOrigin = hasBounds ? ClampToBounds2D(spawnBounds, origin) : origin;
+
         if (max <= 0f)
-            return origin;
+            return clampedOrigin;
 
         min = Mathf.Max(0f, min);
         max = Mathf.Max(0.1f, max);
 
-        const int maxAttempts = 8;
+        const int maxAttempts = 10;
         float z = origin.z;
+        float baseSampleRadius = Mathf.Max(0.1f, navMeshSampleRadius);
+        float expandedSampleRadius = Mathf.Max(baseSampleRadius * 2f, max * 0.25f);
+        float minDistanceSqr = min * min;
+
+        Vector3 bestFallback = clampedOrigin;
+        float bestFallbackDistSqr = -1f;
+        bool hasFallback = false;
 
         for (int attempt = 0; attempt < maxAttempts; attempt++)
         {
             Vector2 dir = UnityEngine.Random.insideUnitCircle;
-            if (dir == Vector2.zero) dir = Vector2.up;
+            if (dir.sqrMagnitude < 0.0001f) dir = Vector2.up;
             dir.Normalize();
 
             float distance = UnityEngine.Random.Range(Mathf.Max(0.1f, min), max);
             Vector3 candidate = origin + new Vector3(dir.x, dir.y, 0f) * distance;
             candidate.z = z;
 
-            if (NavMesh.SamplePosition(candidate, out NavMeshHit hit, navMeshSampleRadius, NavMesh.AllAreas))
-                return new Vector3(hit.position.x, hit.position.y, z);
+            if (hasBounds)
+            {
+                candidate = ClampToBounds2D(spawnBounds, candidate);
+                if (!Contains2D(spawnBounds, candidate))
+                    continue;
+            }
+
+            if (TrySampleSpawnPoint(candidate, hasBounds, spawnBounds, baseSampleRadius, z, out Vector3 sampled))
+            {
+                float distSqr = (sampled - clampedOrigin).sqrMagnitude;
+                if (distSqr >= minDistanceSqr)
+                    return sampled;
+
+                if (!hasFallback || distSqr > bestFallbackDistSqr)
+                {
+                    hasFallback = true;
+                    bestFallbackDistSqr = distSqr;
+                    bestFallback = sampled;
+                }
+            }
+
+            if (TrySampleSpawnPoint(candidate, hasBounds, spawnBounds, expandedSampleRadius, z, out Vector3 expandedSample))
+            {
+                float distSqr = (expandedSample - clampedOrigin).sqrMagnitude;
+                if (distSqr >= minDistanceSqr)
+                    return expandedSample;
+
+                if (!hasFallback || distSqr > bestFallbackDistSqr)
+                {
+                    hasFallback = true;
+                    bestFallbackDistSqr = distSqr;
+                    bestFallback = expandedSample;
+                }
+            }
         }
 
-        Vector2 fallbackDir = UnityEngine.Random.insideUnitCircle;
-        if (fallbackDir == Vector2.zero)
-            fallbackDir = Vector2.one;
-        fallbackDir.Normalize();
+        if (TrySampleSpawnPoint(clampedOrigin, hasBounds, spawnBounds, expandedSampleRadius, z, out Vector3 originSample))
+        {
+            float distSqr = (originSample - clampedOrigin).sqrMagnitude;
+            if (distSqr >= minDistanceSqr)
+                return originSample;
 
-        float fallbackDist = Mathf.Lerp(Mathf.Max(0.1f, min), max, 0.5f);
-        Vector3 fallback = origin + new Vector3(fallbackDir.x, fallbackDir.y, 0f) * fallbackDist;
-        fallback.z = z;
-        return fallback;
+            if (!hasFallback || distSqr > bestFallbackDistSqr)
+            {
+                hasFallback = true;
+                bestFallbackDistSqr = distSqr;
+                bestFallback = originSample;
+            }
+        }
+
+        if (hasFallback)
+            return bestFallback;
+
+        return clampedOrigin;
     }
 
+    private bool TrySampleSpawnPoint(Vector3 candidate, bool hasBounds, Bounds spawnBounds, float sampleRadius, float z, out Vector3 result)
+    {
+        result = candidate;
+
+        if (!NavMesh.SamplePosition(candidate, out NavMeshHit hit, sampleRadius, NavMesh.AllAreas))
+            return false;
+
+        result = new Vector3(hit.position.x, hit.position.y, z);
+
+        if (hasBounds && !Contains2D(spawnBounds, result))
+        {
+            Vector3 clamped = ClampToBounds2D(spawnBounds, result);
+            if (NavMesh.SamplePosition(clamped, out NavMeshHit clampedHit, sampleRadius, NavMesh.AllAreas))
+                result = new Vector3(clampedHit.position.x, clampedHit.position.y, z);
+            else
+                result = clamped;
+        }
+
+        if (hasBounds && !Contains2D(spawnBounds, result))
+            return false;
+
+        return true;
+
+    }
+    private bool TryGetSpawnBounds(out Bounds bounds)
+    {
+        if (spawnBoundsCollider)
+        {
+            bounds = spawnBoundsCollider.bounds;
+            return true;
+        }
+
+        if (spawnBoundsRenderer)
+        {
+            bounds = spawnBoundsRenderer.bounds;
+            return true;
+        }
+
+        if (useManualSpawnBounds)
+        {
+            bounds = new Bounds(
+                manualSpawnBounds.center,
+                new Vector3(manualSpawnBounds.width, manualSpawnBounds.height, 100f));
+            return true;
+        }
+
+        bounds = default;
+        return false;
+    }
+
+    private static bool Contains2D(Bounds bounds, Vector3 point)
+    {
+        return point.x >= bounds.min.x && point.x <= bounds.max.x &&
+               point.y >= bounds.min.y && point.y <= bounds.max.y;
+    }
+
+    private static Vector3 ClampToBounds2D(Bounds bounds, Vector3 point)
+    {
+        return new Vector3(
+            Mathf.Clamp(point.x, bounds.min.x, bounds.max.x),
+            Mathf.Clamp(point.y, bounds.min.y, bounds.max.y),
+            point.z);
+
+    }
     private void CleanupTrackedEnemies()
     {
         if (deathHandlers.Count == 0) return;
@@ -399,3 +522,15 @@ public class WaveManager : MonoBehaviour
         activeMedkits.Clear();
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
