@@ -11,6 +11,11 @@ public class DeathMenuController : MonoBehaviour
     [SerializeField] private Text expText;     
     [SerializeField] private Button bossButton;
     [SerializeField] private UnityEngine.UI.Slider expSlider; 
+    [Header("New record popup")]
+    [SerializeField] private GameObject newRecordPanel;
+    [SerializeField] private Text newRecordText;
+    [SerializeField] private Button newRecordCloseButton;
+
 
     [Header("Buttons per-upgrade")]
     [SerializeField] private UpgradeButton[] upgradeButtons;
@@ -18,10 +23,18 @@ public class DeathMenuController : MonoBehaviour
     private void Awake()
     {
         if (panel) panel.SetActive(false);
+        if (newRecordPanel) newRecordPanel.SetActive(false);
+        if (newRecordCloseButton)
+        {
+            newRecordCloseButton.onClick.RemoveAllListeners();
+            newRecordCloseButton.onClick.AddListener(HideNewRecordPopup);
+        }
 
-            if (upgradeButtons != null)
-                foreach (var ub in upgradeButtons)
-                    if (ub != null) ub.Bind();
+        if (upgradeButtons != null)
+        {
+            foreach (var ub in upgradeButtons)
+                if (ub != null) ub.Bind();
+        }
     }
 
 
@@ -39,15 +52,41 @@ public class DeathMenuController : MonoBehaviour
 
     public void Show()
     {
-        panel.SetActive(true);
-        Time.timeScale = 0f; 
+        if (panel) panel.SetActive(true);
+        Time.timeScale = 0f;
         Refresh();
+        ShowNewRecordPopupIfNeeded();
     }
 
     public void Hide()
     {
-        panel.SetActive(false);
+        if (panel) panel.SetActive(false);
         Time.timeScale = 1f;
+        HideNewRecordPopup();
+    }
+
+
+    private void ShowNewRecordPopupIfNeeded()
+    {
+        var mp = MetaProgression.Instance;
+        if (mp != null)
+        {
+            int record = mp.MaxWaveReached;
+            if (mp.ConsumeNewBestWaveFlag())
+            {
+                if (newRecordText) newRecordText.text = $"Поздравляем! новый рекорд: {record}";
+                if (newRecordPanel) newRecordPanel.SetActive(true);
+                return;
+            }
+        }
+
+        HideNewRecordPopup();
+    }
+
+    private void HideNewRecordPopup()
+    {
+        if (newRecordPanel && newRecordPanel.activeSelf)
+            newRecordPanel.SetActive(false);
     }
 
     public void OnContinue() 

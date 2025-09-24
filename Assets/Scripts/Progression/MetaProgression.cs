@@ -13,7 +13,7 @@ public class MetaProgression : MonoBehaviour
     public int Coins { get; private set; }
     public int Exp   { get; private set; }
     public int MaxWaveReached { get; private set; }
-
+    public bool HasNewBestWaveThisRun { get; private set; }
     public UnityEvent onValuesChanged;
     public UnityEvent onBestWaveChanged;
 
@@ -30,9 +30,18 @@ public class MetaProgression : MonoBehaviour
         Coins          = PlayerPrefs.GetInt(K_COINS,    0);
         Exp            = PlayerPrefs.GetInt(K_EXP,      0);
         MaxWaveReached = PlayerPrefs.GetInt(K_MAX_WAVE, 0);
+        HasNewBestWaveThisRun = false;
 
         onValuesChanged   ??= new UnityEvent();
         onBestWaveChanged ??= new UnityEvent();
+    }
+
+    public bool ConsumeNewBestWaveFlag()
+    {
+        if (!HasNewBestWaveThisRun)
+            return false;
+        HasNewBestWaveThisRun = false;
+        return true;
     }
 
     public void AddCoins(int amount)
@@ -66,6 +75,7 @@ public class MetaProgression : MonoBehaviour
         if (wave <= MaxWaveReached) return;
 
         MaxWaveReached = wave;
+        HasNewBestWaveThisRun = true;
         PlayerPrefs.SetInt(K_MAX_WAVE, MaxWaveReached);
         onBestWaveChanged.Invoke();
     }
@@ -74,3 +84,5 @@ public class MetaProgression : MonoBehaviour
     public int  BossUnlockExp => bossUnlockExp;
     public void SetBossUnlockExp(int value) => bossUnlockExp = Mathf.Max(1, value);
 }
+
+
