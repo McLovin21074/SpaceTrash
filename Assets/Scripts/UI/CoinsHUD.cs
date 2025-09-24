@@ -5,96 +5,98 @@ using System.Collections;
 public class CoinsHUD : MonoBehaviour
 {
     [Header("Refs")]
-    [SerializeField] private Image coinIcon;
-    [SerializeField] private Text  coinsText;
+    [SerializeField] private Text coinsText;            
+    [SerializeField] private Image coinIcon;              
+    [SerializeField] private RectTransform pulseTarget;  
 
-    [Header("Display")]
-    [SerializeField] private bool shortFormat = false;
-    [SerializeField] private string prefix = "";
-
-    [Header("Pulse on gain")]
-    [SerializeField] private RectTransform pulseTarget; 
-    [SerializeField] private float pulseScale = 1.12f;
-    [SerializeField] private float pulseTime  = 0.08f;
+    [Header("Pulse")]
+    [SerializeField, Min(1f)] private float pulseScale = 1.12f;
+    [SerializeField, Min(0f)] private float pulseTime  = 0.08f;
 
     private int lastShown = -1;
-    private Coroutine pulse;
-
-    private void Reset()
-    {
-        if (!coinsText) coinsText = GetComponentInChildren<Text>(true);
-        if (!coinIcon)  coinIcon  = GetComponentInChildren<Image>(true);
-        if (!pulseTarget) pulseTarget = transform as RectTransform;
-    }
+    private Vector3 baseScale = Vector3.one;
+    private Coroutine pulseCo;
 
     private void Awake()
     {
-        if (!pulseTarget) pulseTarget = transform as RectTransform;
+        if (!pulseTarget && coinsText) pulseTarget = coinsText.rectTransform;
+        if (pulseTarget) baseScale = pulseTarget.localScale;
+        Refresh(true);
     }
 
     private void OnEnable()
     {
         if (MetaProgression.Instance)
-            MetaProgression.Instance.onValuesChanged.AddListener(Refresh);
-        Refresh(); 
+            MetaProgression.Instance.onValuesChanged.AddListener(OnMetaChange);
+        Refresh(true);
     }
 
     private void OnDisable()
     {
         if (MetaProgression.Instance)
-            MetaProgression.Instance.onValuesChanged.RemoveListener(Refresh);
+            MetaProgression.Instance.onValuesChanged.RemoveListener(OnMetaChange);
+        ResetScale();
     }
 
-    public void Refresh()
+    private void OnDestroy() => OnDisable();
+
+    private void OnMetaChange() => Refresh();
+
+    public void Refresh(bool force = false)
     {
         var mp = MetaProgression.Instance;
-        if (mp == null || coinsText == null) return;
+        if (!mp) return;
 
         int coins = mp.Coins;
-        coinsText.text = prefix + (shortFormat ? FormatShort(coins) : coins.ToString());
+        if (coinsText) coinsText.text = coins.ToString();
 
-        if (lastShown >= 0 && coins > lastShown)
-            DoPulse();
+        if (force) lastShown = coins;
+
+        if (coins > lastShown) TriggerPulse();
 
         lastShown = coins;
     }
 
-    private void DoPulse()
+    private void TriggerPulse()
     {
-        if (pulseTarget == null) return;
-        if (pulse != null) StopCoroutine(pulse);
-        pulse = StartCoroutine(PulseRoutine());
+        if (!pulseTarget) return;
+
+        if (pulseCo != null) StopCoroutine(pulseCo);
+        pulseTarget.localScale = baseScale;
+        pulseCo = StartCoroutine(PulseRoutine());
     }
 
     private IEnumerator PulseRoutine()
     {
-        Vector3 baseScale = pulseTarget.localScale;
-        Vector3 target    = baseScale * pulseScale;
+        float half = Mathf.Max(0.0001f, pulseTime);
+        Vector3 big = baseScale * pulseScale;
 
         float t = 0f;
-        while (t < pulseTime)
+        while (t < half)
         {
             t += Time.unscaledDeltaTime;
-            float k = t / pulseTime;
-            pulseTarget.localScale = Vector3.Lerp(baseScale, target, k);
+            float a = Mathf.Clamp01(t / half);
+            a = a * a * (3f - 2f * a);             
+            pulseTarget.localScale = Vector3.Lerp(baseScale, big, a);
             yield return null;
         }
+
         t = 0f;
-        while (t < pulseTime)
+        while (t < half)
         {
             t += Time.unscaledDeltaTime;
-            float k = t / pulseTime;
-            pulseTarget.localScale = Vector3.Lerp(target, baseScale, k);
+            float a = Mathf.Clamp01(t / half);
+            a = a * a * (3f - 2f * a);
+            pulseTarget.localScale = Vector3.Lerp(big, baseScale, a);
             yield return null;
         }
-        pulseTarget.localScale = baseScale;
-        pulse = null;
+
+        ResetScale();
+        pulseCo = null;
     }
 
-    private static string FormatShort(int n)
+    private void ResetScale()
     {
-        if (n >= 1_000_000) return (n / 1_000_000f).ToString("0.#") + "M";
-        if (n >= 1_000)     return (n / 1_000f).ToString("0.#") + "k";
-        return n.ToString();
+        if (pulseTarget) pulseTarget.localScale = baseScale;
     }
 }

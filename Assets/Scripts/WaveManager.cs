@@ -25,23 +25,21 @@ public class WaveManager : MonoBehaviour
     [SerializeField, Min(1)] private int baseEnemiesPerWave = 4;
     [SerializeField, Min(0f)] private float enemiesPerWaveGrowth = 1.5f;
     [SerializeField, Min(0f)] private float intermissionDuration = 6f;
+
+    [Header("Fallback spawn ring (used when no spawn points are set)")]
     [SerializeField, Min(0f)] private float spawnRadiusMin = 6f;
     [SerializeField, Min(0f)] private float spawnRadiusMax = 12f;
     [SerializeField, Min(0.01f)] private float navMeshSampleRadius = 2f;
+    [Tooltip("Maximum random attempts when searching for a valid navmesh position.")]
+    [SerializeField, Min(1)] private int spawnAttemptsPerEnemy = 16;
 
-    [Header("Spawn bounds")]
-    [Tooltip("Optional: Collider2D that encloses the playable area; spawns stay inside it.")]
-    [SerializeField] private Collider2D spawnBoundsCollider;
-    [Tooltip("Optional: Renderer whose bounds define the spawnable area.")]
-    [SerializeField] private Renderer spawnBoundsRenderer;
-    [Tooltip("Enable to use manual world-space bounds when no collider or renderer is set.")]
-    [SerializeField] private bool useManualSpawnBounds = false;
-    [SerializeField] private Rect manualSpawnBounds = new Rect(-10f, -10f, 20f, 20f);
-    [Header("Scaling every N waves")]
-    [SerializeField, Min(1)] private int wavesPerStatIncrease = 3;
-    [SerializeField] private float hpBonusPerStep = 0.15f;
-    [SerializeField] private float damageBonusPerStep = 0.1f;
-    [SerializeField] private float speedBonusPerStep = 0.05f;
+    [Header("Spawn points")]
+    [Tooltip("Preferred world positions enemies should spawn at. Fill with scene transforms.")]
+    [SerializeField] private List<Transform> enemySpawnPoints = new();
+    [Tooltip("Adds a small random offset around each spawn point (0 = exactly the transform position).")]
+    [SerializeField, Min(0f)] private float spawnPointJitterRadius = 0.75f;
+    [Tooltip("Shuffle spawn points at the start of every wave.")]
+    [SerializeField] private bool randomizeSpawnOrderEachWave = true;
 
     [Header("Intermission pickups")]
     [SerializeField] private GameObject medkitPrefab;
@@ -53,6 +51,12 @@ public class WaveManager : MonoBehaviour
     [SerializeField, Min(0f)] private float medkitSpawnRadiusMin = 2f;
     [SerializeField, Min(0f)] private float medkitSpawnRadiusMax = 8f;
 
+    [Header("Scaling every N waves")]
+    [SerializeField, Min(1)] private int wavesPerStatIncrease = 3;
+    [SerializeField] private float hpBonusPerStep = 0.15f;
+    [SerializeField] private float damageBonusPerStep = 0.1f;
+    [SerializeField] private float speedBonusPerStep = 0.05f;
+
     public event Action<int> WaveStarted;
     public event Action<int> WaveCompleted;
     public event Action<float> IntermissionTick;
@@ -60,6 +64,9 @@ public class WaveManager : MonoBehaviour
     private readonly Dictionary<Health, UnityAction> deathHandlers = new();
     private readonly List<GameObject> spawnCandidates = new();
     private readonly List<MedkitPickup> activeMedkits = new();
+    private readonly Queue<Transform> spawnPointQueue = new();
+    private readonly List<Transform> spawnPointBuffer = new();
+
     private Transform player;
     private Coroutine intermissionRoutine;
     private int currentWave;
@@ -80,12 +87,15 @@ public class WaveManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+
         Instance = this;
     }
 
     private void OnDestroy()
     {
-        if (Instance == this) Instance = null;
+        if (Instance == this)
+            Instance = null;
+
         CleanupTrackedEnemies();
         CleanupMedkits();
     }
@@ -98,24 +108,26 @@ public class WaveManager : MonoBehaviour
 
     private IEnumerator WaitForPlayer()
     {
-        while (!TryFindPlayer()) yield return null;
+        while (!TryFindPlayer())
+            yield return null;
     }
 
     private bool TryFindPlayer()
     {
-        if (player && player.gameObject.activeInHierarchy) return true;
+        if (player && player.gameObject.activeInHierarchy)
+            return true;
 
-        var go = GameObject.FindGameObjectWithTag(playerTag);
-        if (go)
+        GameObject tagged = GameObject.FindGameObjectWithTag(playerTag);
+        if (tagged)
         {
-            player = go.transform;
+            player = tagged.transform;
             return true;
         }
 
-        var p = FindFirstObjectByType<Player>();
-        if (p)
+        Player found = FindFirstObjectByType<Player>();
+        if (found)
         {
-            player = p.transform;
+            player = found.transform;
             return true;
         }
 
@@ -126,7 +138,7 @@ public class WaveManager : MonoBehaviour
     {
         if (waveRunning)
         {
-            Debug.LogWarning("[WaveManager] Cannot force start new wave while current wave is running.");
+            Debug.LogWarning("[WaveManager] Cannot force start new wave while the current wave is running.");
             return;
         }
 
@@ -155,96 +167,79 @@ public class WaveManager : MonoBehaviour
         currentWave++;
         enemiesRemaining = 0;
         waveRunning = true;
-
         WaveStarted?.Invoke(currentWave);
 
-        int spawnCount = CalculateEnemyCount(currentWave);
-        Vector3 playerPos = player ? player.position : transform.position;
+        PrepareSpawnPointQueue();
 
+        int spawnCount = CalculateEnemyCount(currentWave);
+        Vector3 origin = player ? player.position : transform.position;
         var multipliers = CalculateStatMultipliers(currentWave);
 
         for (int i = 0; i < spawnCount; i++)
         {
-            SpawnEnemy(currentWave, playerPos, multipliers);
+            SpawnEnemy(origin, multipliers);
         }
 
         if (enemiesRemaining == 0)
-        {
             HandleWaveCleared();
-        }
     }
 
-    private void SpawnEnemy(int wave, Vector3 origin, (float hp, float dmg, float spd) multipliers)
+    private void SpawnEnemy(Vector3 playerOrigin, (float hp, float dmg, float spd) multipliers)
     {
-        GameObject prefab = PickEnemyPrefab(wave);
+        GameObject prefab = PickEnemyPrefab(currentWave);
         if (!prefab)
-        {
-            Debug.LogWarning("[WaveManager] No prefab unlocked for this wave.");
             return;
-        }
 
-        Vector3 spawnPos = FindSpawnPosition(origin, spawnRadiusMin, spawnRadiusMax);
+        Vector3 spawnPos = GetNextEnemySpawnPosition(playerOrigin);
         GameObject instance = Instantiate(prefab, spawnPos, Quaternion.identity, enemiesParent);
-
         if (!instance)
             return;
 
         enemiesRemaining++;
 
-        var ai = instance.GetComponent<EnemyAI>();
-        if (ai)
+        if (instance.TryGetComponent(out EnemyAI ai))
             ai.ApplyWaveMultipliers(multipliers.hp, multipliers.dmg, multipliers.spd);
 
-        var health = instance.GetComponent<Health>();
-        if (health)
+        if (instance.TryGetComponent(out Health health))
             RegisterEnemy(health);
     }
 
     private GameObject PickEnemyPrefab(int wave)
     {
-        if (enemyPrefabs == null || enemyPrefabs.Count == 0) return null;
-
         spawnCandidates.Clear();
         GameObject fallback = null;
-        int fallbackWave = int.MaxValue;
+        int fallbackUnlock = int.MaxValue;
 
-        foreach (var entry in enemyPrefabs)
+        foreach (WaveEnemyEntry entry in enemyPrefabs)
         {
-            if (entry == null || entry.prefab == null) continue;
+            if (entry == null || entry.prefab == null)
+                continue;
 
-            int unlock = Mathf.Max(1, entry.unlockWave);
-            if (wave >= unlock)
+            int unlockWave = Mathf.Max(1, entry.unlockWave);
+            if (wave >= unlockWave)
             {
                 spawnCandidates.Add(entry.prefab);
             }
-            else if (unlock < fallbackWave)
+            else if (unlockWave < fallbackUnlock)
             {
-                fallbackWave = unlock;
+                fallbackUnlock = unlockWave;
                 fallback = entry.prefab;
             }
         }
 
-        if (spawnCandidates.Count > 0)
-        {
-            int index = UnityEngine.Random.Range(0, spawnCandidates.Count);
-            return spawnCandidates[index];
-        }
+        if (spawnCandidates.Count == 0)
+            return fallback;
 
-        return fallback;
+        int index = UnityEngine.Random.Range(0, spawnCandidates.Count);
+        return spawnCandidates[index];
     }
 
     private void RegisterEnemy(Health health)
     {
-        if (!health || deathHandlers.ContainsKey(health)) return;
+        if (!health || deathHandlers.ContainsKey(health))
+            return;
 
-        UnityAction handler = null;
-        handler = () =>
-        {
-            health.onDeath.RemoveListener(handler);
-            deathHandlers.Remove(health);
-            OnEnemyKilled();
-        };
-
+        UnityAction handler = OnEnemyKilled;
         deathHandlers.Add(health, handler);
         health.onDeath.AddListener(handler);
     }
@@ -279,14 +274,17 @@ public class WaveManager : MonoBehaviour
 
     private void SpawnIntermissionMedkits()
     {
-        if (!medkitPrefab) return;
+        if (!medkitPrefab)
+            return;
 
         int minCount = Mathf.Max(0, Mathf.Min(medkitsMin, medkitsMax));
         int maxCount = Mathf.Max(minCount, Mathf.Max(medkitsMin, medkitsMax));
-        if (maxCount <= 0) return;
+        if (maxCount <= 0)
+            return;
 
         int spawnCount = UnityEngine.Random.Range(minCount, maxCount + 1);
-        if (spawnCount <= 0) return;
+        if (spawnCount <= 0)
+            return;
 
         Vector3 origin = player ? player.position : transform.position;
         int healMin = Mathf.Max(1, Mathf.Min(medkitHealMin, medkitHealMax));
@@ -294,12 +292,14 @@ public class WaveManager : MonoBehaviour
 
         for (int i = 0; i < spawnCount; i++)
         {
-            Vector3 spawnPos = FindSpawnPosition(origin, medkitSpawnRadiusMin, medkitSpawnRadiusMax);
+            Vector3 spawnPos = FindNavMeshPosition(origin, medkitSpawnRadiusMin, medkitSpawnRadiusMax);
             GameObject instance = Instantiate(medkitPrefab, spawnPos, Quaternion.identity, medkitParent);
-            if (!instance) continue;
+            if (!instance)
+                continue;
 
-            var pickup = instance.GetComponent<MedkitPickup>() ?? instance.AddComponent<MedkitPickup>();
+            MedkitPickup pickup = instance.GetComponent<MedkitPickup>() ?? instance.AddComponent<MedkitPickup>();
             pickup.Configure(this, healMin, healMax);
+
             if (!instance.GetComponent<EnemyIndicatorTarget>())
                 instance.AddComponent<EnemyIndicatorTarget>();
 
@@ -316,13 +316,16 @@ public class WaveManager : MonoBehaviour
             yield return null;
             intermissionRemaining = Mathf.Max(0f, intermissionRemaining - Time.deltaTime);
         }
+
         IntermissionTick?.Invoke(0f);
         StartNextWave();
     }
 
     public void NotifyMedkitRemoved(MedkitPickup pickup)
     {
-        if (pickup == null) return;
+        if (!pickup)
+            return;
+
         activeMedkits.Remove(pickup);
     }
 
@@ -344,193 +347,139 @@ public class WaveManager : MonoBehaviour
         return (Mathf.Max(0.01f, hpMul), Mathf.Max(0.01f, dmgMul), Mathf.Max(0.01f, spdMul));
     }
 
-    private Vector3 FindSpawnPosition(Vector3 origin, float minRadius, float maxRadius)
+    private Vector3 GetNextEnemySpawnPosition(Vector3 playerOrigin)
     {
-        float min = Mathf.Min(minRadius, maxRadius);
-        float max = Mathf.Max(minRadius, maxRadius);
-
-        bool hasBounds = TryGetSpawnBounds(out Bounds spawnBounds);
-        Vector3 clampedOrigin = hasBounds ? ClampToBounds2D(spawnBounds, origin) : origin;
-
-        if (max <= 0f)
-            return clampedOrigin;
-
-        min = Mathf.Max(0f, min);
-        max = Mathf.Max(0.1f, max);
-
-        const int maxAttempts = 10;
-        float z = origin.z;
-        float baseSampleRadius = Mathf.Max(0.1f, navMeshSampleRadius);
-        float expandedSampleRadius = Mathf.Max(baseSampleRadius * 2f, max * 0.25f);
-        float minDistanceSqr = min * min;
-
-        Vector3 bestFallback = clampedOrigin;
-        float bestFallbackDistSqr = -1f;
-        bool hasFallback = false;
-
-        for (int attempt = 0; attempt < maxAttempts; attempt++)
+        if (enemySpawnPoints != null && enemySpawnPoints.Count > 0)
         {
-            Vector2 dir = UnityEngine.Random.insideUnitCircle;
-            if (dir.sqrMagnitude < 0.0001f) dir = Vector2.up;
-            dir.Normalize();
+            if (spawnPointQueue.Count == 0)
+                RefillSpawnPointQueue();
 
-            float distance = UnityEngine.Random.Range(Mathf.Max(0.1f, min), max);
-            Vector3 candidate = origin + new Vector3(dir.x, dir.y, 0f) * distance;
-            candidate.z = z;
-
-            if (hasBounds)
+            if (spawnPointQueue.Count > 0)
             {
-                candidate = ClampToBounds2D(spawnBounds, candidate);
-                if (!Contains2D(spawnBounds, candidate))
-                    continue;
-            }
-
-            if (TrySampleSpawnPoint(candidate, hasBounds, spawnBounds, baseSampleRadius, z, out Vector3 sampled))
-            {
-                float distSqr = (sampled - clampedOrigin).sqrMagnitude;
-                if (distSqr >= minDistanceSqr)
-                    return sampled;
-
-                if (!hasFallback || distSqr > bestFallbackDistSqr)
+                Transform point = spawnPointQueue.Dequeue();
+                if (point)
                 {
-                    hasFallback = true;
-                    bestFallbackDistSqr = distSqr;
-                    bestFallback = sampled;
-                }
-            }
+                    Vector3 basePos = point.position;
+                    if (spawnPointJitterRadius > 0f)
+                    {
+                        Vector2 jitter = UnityEngine.Random.insideUnitCircle * spawnPointJitterRadius;
+                        basePos += new Vector3(jitter.x, jitter.y, 0f);
+                    }
 
-            if (TrySampleSpawnPoint(candidate, hasBounds, spawnBounds, expandedSampleRadius, z, out Vector3 expandedSample))
-            {
-                float distSqr = (expandedSample - clampedOrigin).sqrMagnitude;
-                if (distSqr >= minDistanceSqr)
-                    return expandedSample;
-
-                if (!hasFallback || distSqr > bestFallbackDistSqr)
-                {
-                    hasFallback = true;
-                    bestFallbackDistSqr = distSqr;
-                    bestFallback = expandedSample;
+                    if (TryGetValidSpawnPoint(basePos, out Vector3 result))
+                        return result;
                 }
             }
         }
 
-        if (TrySampleSpawnPoint(clampedOrigin, hasBounds, spawnBounds, expandedSampleRadius, z, out Vector3 originSample))
-        {
-            float distSqr = (originSample - clampedOrigin).sqrMagnitude;
-            if (distSqr >= minDistanceSqr)
-                return originSample;
-
-            if (!hasFallback || distSqr > bestFallbackDistSqr)
-            {
-                hasFallback = true;
-                bestFallbackDistSqr = distSqr;
-                bestFallback = originSample;
-            }
-        }
-
-        if (hasFallback)
-            return bestFallback;
-
-        return clampedOrigin;
+        // Fallback to ring sampling around the player
+        return FindNavMeshPosition(playerOrigin, spawnRadiusMin, spawnRadiusMax);
     }
 
-    private bool TrySampleSpawnPoint(Vector3 candidate, bool hasBounds, Bounds spawnBounds, float sampleRadius, float z, out Vector3 result)
+    private void PrepareSpawnPointQueue()
+    {
+        spawnPointQueue.Clear();
+        RefillSpawnPointQueue();
+    }
+
+    private void RefillSpawnPointQueue()
+    {
+        spawnPointBuffer.Clear();
+
+        if (enemySpawnPoints != null)
+        {
+            foreach (Transform point in enemySpawnPoints)
+            {
+                if (point)
+                    spawnPointBuffer.Add(point);
+            }
+        }
+
+        if (spawnPointBuffer.Count == 0)
+            return;
+
+        if (randomizeSpawnOrderEachWave)
+            Shuffle(spawnPointBuffer);
+
+        foreach (Transform point in spawnPointBuffer)
+            spawnPointQueue.Enqueue(point);
+    }
+
+    private bool TryGetValidSpawnPoint(Vector3 candidate, out Vector3 result)
     {
         result = candidate;
 
-        if (!NavMesh.SamplePosition(candidate, out NavMeshHit hit, sampleRadius, NavMesh.AllAreas))
-            return false;
-
-        result = new Vector3(hit.position.x, hit.position.y, z);
-
-        if (hasBounds && !Contains2D(spawnBounds, result))
+        if (NavMesh.SamplePosition(candidate, out NavMeshHit hit, navMeshSampleRadius, NavMesh.AllAreas))
         {
-            Vector3 clamped = ClampToBounds2D(spawnBounds, result);
-            if (NavMesh.SamplePosition(clamped, out NavMeshHit clampedHit, sampleRadius, NavMesh.AllAreas))
-                result = new Vector3(clampedHit.position.x, clampedHit.position.y, z);
-            else
-                result = clamped;
-        }
-
-        if (hasBounds && !Contains2D(spawnBounds, result))
-            return false;
-
-        return true;
-
-    }
-    private bool TryGetSpawnBounds(out Bounds bounds)
-    {
-        if (spawnBoundsCollider)
-        {
-            bounds = spawnBoundsCollider.bounds;
+            result = new Vector3(hit.position.x, hit.position.y, candidate.z);
             return true;
         }
 
-        if (spawnBoundsRenderer)
-        {
-            bounds = spawnBoundsRenderer.bounds;
-            return true;
-        }
-
-        if (useManualSpawnBounds)
-        {
-            bounds = new Bounds(
-                manualSpawnBounds.center,
-                new Vector3(manualSpawnBounds.width, manualSpawnBounds.height, 100f));
-            return true;
-        }
-
-        bounds = default;
         return false;
     }
 
-    private static bool Contains2D(Bounds bounds, Vector3 point)
+    private Vector3 FindNavMeshPosition(Vector3 origin, float minRadius, float maxRadius)
     {
-        return point.x >= bounds.min.x && point.x <= bounds.max.x &&
-               point.y >= bounds.min.y && point.y <= bounds.max.y;
+        float min = Mathf.Max(0f, Mathf.Min(minRadius, maxRadius));
+        float max = Mathf.Max(min, Mathf.Max(minRadius, maxRadius));
+        if (max <= 0f)
+            return origin;
+
+        int attempts = Mathf.Max(4, spawnAttemptsPerEnemy);
+        float z = origin.z;
+
+        for (int i = 0; i < attempts; i++)
+        {
+            Vector2 dir = UnityEngine.Random.insideUnitCircle;
+            if (dir.sqrMagnitude < 0.0001f)
+                dir = Vector2.up;
+            dir.Normalize();
+
+            float distance = UnityEngine.Random.Range(min, max);
+            Vector3 candidate = origin + new Vector3(dir.x, dir.y, 0f) * distance;
+            candidate.z = z;
+
+            if (NavMesh.SamplePosition(candidate, out NavMeshHit hit, navMeshSampleRadius, NavMesh.AllAreas))
+                return new Vector3(hit.position.x, hit.position.y, z);
+        }
+
+        return origin;
     }
 
-    private static Vector3 ClampToBounds2D(Bounds bounds, Vector3 point)
+    private static void Shuffle<T>(IList<T> list)
     {
-        return new Vector3(
-            Mathf.Clamp(point.x, bounds.min.x, bounds.max.x),
-            Mathf.Clamp(point.y, bounds.min.y, bounds.max.y),
-            point.z);
-
+        for (int i = list.Count - 1; i > 0; i--)
+        {
+            int j = UnityEngine.Random.Range(0, i + 1);
+            (list[i], list[j]) = (list[j], list[i]);
+        }
     }
+
     private void CleanupTrackedEnemies()
     {
-        if (deathHandlers.Count == 0) return;
+        if (deathHandlers.Count == 0)
+            return;
 
-        foreach (var kvp in deathHandlers)
+        foreach (var pair in deathHandlers)
         {
-            if (kvp.Key)
-                kvp.Key.onDeath.RemoveListener(kvp.Value);
+            if (pair.Key)
+                pair.Key.onDeath.RemoveListener(pair.Value);
         }
+
         deathHandlers.Clear();
     }
 
     private void CleanupMedkits()
     {
-        if (activeMedkits.Count == 0) return;
+        if (activeMedkits.Count == 0)
+            return;
 
-        foreach (var pickup in activeMedkits)
+        foreach (MedkitPickup pickup in activeMedkits)
         {
             if (pickup)
                 Destroy(pickup.gameObject);
         }
+
         activeMedkits.Clear();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
