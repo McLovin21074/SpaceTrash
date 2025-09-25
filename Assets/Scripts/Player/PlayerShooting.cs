@@ -1,21 +1,42 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerShooting : MonoBehaviour
 {
     [SerializeField] private PlayerSatatsSO stats;
-    [SerializeField] private Transform firePoint; // если нужно стрелять не от игрока
-    [SerializeField] private BulletPool pool;     // по умолчанию от инстанса пули
+    [SerializeField] private Transform firePoint; // точка выхода пуль
+    [SerializeField] private BulletPool pool;     // пул снарядов
+    [SerializeField] private bool mirrorFireUnlocked;
 
     private float cooldown;
 
     public PlayerSatatsSO Stats => stats;
+    public bool IsMirrorFireUnlocked => mirrorFireUnlocked;
 
     public void OverrideStats(PlayerSatatsSO s) { stats = s; }
+    public void EnableMirrorFire(bool enable = true) => mirrorFireUnlocked = enable;
 
 
     private void Awake()
     {
         if (pool == null) pool = BulletPool.Instance;
+
+        if (MetaProgression.Instance != null)
+        {
+            ApplyMirrorFireFromMeta();
+            MetaProgression.Instance.onValuesChanged.AddListener(ApplyMirrorFireFromMeta);
+        }
+        else if (MetaProgression.GetSavedMirrorFireFlag())
+        {
+            mirrorFireUnlocked = true;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (MetaProgression.Instance != null)
+        {
+            MetaProgression.Instance.onValuesChanged.RemoveListener(ApplyMirrorFireFromMeta);
+        }
     }
 
     private void Update()
@@ -50,7 +71,18 @@ public class PlayerShooting : MonoBehaviour
         Debug.Log($"[Shoot] SO={(stats ? stats.name : "null")} dmg={damage} cnt={count} spd={speed} rng={range}");
 
         Vector3 origin = firePoint != null ? firePoint.position : transform.position;
+        EmitBurst(origin, dir, count, spread, speed, range, damage, size);
 
+        if (mirrorFireUnlocked)
+        {
+            EmitBurst(origin, -dir, count, spread, speed, range, damage, size);
+        }
+    }
+
+    private void EmitBurst(Vector3 origin, Vector2 dir, int count, float spread, float speed, float range, int damage, float size)
+    {
+        dir = dir.normalized;
+        if (dir == Vector2.zero) return;
 
         float baseAngle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
         float totalSpread = spread * (count - 1);
@@ -64,6 +96,14 @@ public class PlayerShooting : MonoBehaviour
             var b = pool.Get();
             b.transform.position = origin;
             b.Fire(shotDir, speed, range, damage, size);
+        }
+    }
+
+    private void ApplyMirrorFireFromMeta()
+    {
+        if (MetaProgression.Instance != null)
+        {
+            mirrorFireUnlocked = MetaProgression.Instance.MirrorFireUnlocked;
         }
     }
 }

@@ -1,4 +1,4 @@
-// MetaProgression.cs
+﻿// MetaProgression.cs
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -8,18 +8,22 @@ public class MetaProgression : MonoBehaviour
     public static MetaProgression Instance { get; private set; }
 
     [Header("Boss unlock")]
-    [SerializeField] private int bossUnlockExp = 100; // ?????????? ?????<?'?? ???>?? ?????????? ?+????????
+    [SerializeField] private int bossUnlockExp = 100;
 
     public int Coins { get; private set; }
-    public int Exp   { get; private set; }
+    public int Exp { get; private set; }
     public int MaxWaveReached { get; private set; }
     public bool HasNewBestWaveThisRun { get; private set; }
+    public bool MirrorFireUnlocked { get; private set; }
+    public static bool GetSavedMirrorFireFlag() => PlayerPrefs.GetInt(K_MIRROR_FIRE, 0) != 0;
+
     public UnityEvent onValuesChanged;
     public UnityEvent onBestWaveChanged;
 
-    private const string K_COINS    = "mp_coins";
-    private const string K_EXP      = "mp_exp";
+    private const string K_COINS = "mp_coins";
+    private const string K_EXP = "mp_exp";
     private const string K_MAX_WAVE = "mp_max_wave";
+    private const string K_MIRROR_FIRE = "mp_mirror_fire";
 
     private void Awake()
     {
@@ -27,12 +31,13 @@ public class MetaProgression : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
-        Coins          = PlayerPrefs.GetInt(K_COINS,    0);
-        Exp            = PlayerPrefs.GetInt(K_EXP,      0);
+        Coins = PlayerPrefs.GetInt(K_COINS, 0);
+        Exp = PlayerPrefs.GetInt(K_EXP, 0);
         MaxWaveReached = PlayerPrefs.GetInt(K_MAX_WAVE, 0);
+        MirrorFireUnlocked = PlayerPrefs.GetInt(K_MIRROR_FIRE, 0) != 0;
         HasNewBestWaveThisRun = false;
 
-        onValuesChanged   ??= new UnityEvent();
+        onValuesChanged ??= new UnityEvent();
         onBestWaveChanged ??= new UnityEvent();
     }
 
@@ -80,9 +85,23 @@ public class MetaProgression : MonoBehaviour
         onBestWaveChanged.Invoke();
     }
 
+    public void UnlockMirrorFire()
+    {
+        if (MirrorFireUnlocked) return;
+        MirrorFireUnlocked = true;
+        PlayerPrefs.SetInt(K_MIRROR_FIRE, 1);
+        onValuesChanged.Invoke();
+    }
+
+    public void ResetMirrorFire()
+    {
+        if (!MirrorFireUnlocked) return;
+        MirrorFireUnlocked = false;
+        PlayerPrefs.SetInt(K_MIRROR_FIRE, 0);
+        onValuesChanged.Invoke();
+    }
+
     public bool BossUnlocked => Exp >= bossUnlockExp;
-    public int  BossUnlockExp => bossUnlockExp;
+    public int BossUnlockExp => bossUnlockExp;
     public void SetBossUnlockExp(int value) => bossUnlockExp = Mathf.Max(1, value);
 }
-
-

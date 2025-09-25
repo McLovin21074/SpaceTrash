@@ -17,7 +17,7 @@ MonoBehaviour:
   fireRate: 5
   bulletSpeed: 10
   bulletRange: 8
-  bulletDamage: 1
+  bulletDamage: 20
   bulletCount: 1
   bulletSize: 4
   spreadDeg: 0

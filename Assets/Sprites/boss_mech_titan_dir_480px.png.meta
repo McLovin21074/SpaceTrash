@@ -1,0 +1,468 @@
+fileFormatVersion: 2
+guid: d2c3ad5f02b7f5244b83b4242d3519d7
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -2019555046692090200
+    second: boss_mech_titan_dir_480px_0
+  - first:
+      213: -8179329962505046213
+    second: boss_mech_titan_dir_480px_1
+  - first:
+      213: -3666092748295577807
+    second: boss_mech_titan_dir_480px_2
+  - first:
+      213: -2807605188385075477
+    second: boss_mech_titan_dir_480px_3
+  - first:
+      213: 6633594590425170360
+    second: boss_mech_titan_dir_480px_4
+  - first:
+      213: -3915028020434656136
+    second: boss_mech_titan_dir_480px_5
+  - first:
+      213: -6983652997457693520
+    second: boss_mech_titan_dir_480px_6
+  - first:
+      213: 1111796273481155514
+    second: boss_mech_titan_dir_480px_7
+  - first:
+      213: -3387178166991023833
+    second: boss_mech_titan_dir_480px_8
+  - first:
+      213: -2352680054665955460
+    second: boss_mech_titan_dir_480px_9
+  - first:
+      213: 2606540782176203819
+    second: boss_mech_titan_dir_480px_10
+  - first:
+      213: -1124415091757618840
+    second: boss_mech_titan_dir_480px_11
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: boss_mech_titan_dir_480px_0
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 1544
+        width: 440
+        height: 275
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8ae0295926919f3e0800000000000000
+      internalID: -2019555046692090200
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boss_mech_titan_dir_480px_1
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 1550
+        width: 440
+        height: 275
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b377d2c2cbe2d7e80800000000000000
+      internalID: -8179329962505046213
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boss_mech_titan_dir_480px_2
+      rect:
+        serializedVersion: 2
+        x: 992
+        y: 1538
+        width: 440
+        height: 275
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 13fd438b11c6f1dc0800000000000000
+      internalID: -3666092748295577807
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boss_mech_titan_dir_480px_3
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 1064
+        width: 440
+        height: 275
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bee83ccd4f16909d0800000000000000
+      internalID: -2807605188385075477
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boss_mech_titan_dir_480px_4
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 1070
+        width: 440
+        height: 275
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8b1ce3a32234f0c50800000000000000
+      internalID: 6633594590425170360
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boss_mech_titan_dir_480px_5
+      rect:
+        serializedVersion: 2
+        x: 992
+        y: 1058
+        width: 440
+        height: 275
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 874aa4412c60ba9c0800000000000000
+      internalID: -3915028020434656136
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boss_mech_titan_dir_480px_6
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 584
+        width: 440
+        height: 275
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0b431fb8994151f90800000000000000
+      internalID: -6983652997457693520
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boss_mech_titan_dir_480px_7
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 590
+        width: 440
+        height: 275
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ab38277f1d4ed6f00800000000000000
+      internalID: 1111796273481155514
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boss_mech_titan_dir_480px_8
+      rect:
+        serializedVersion: 2
+        x: 992
+        y: 578
+        width: 440
+        height: 275
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7219a8537635ef0d0800000000000000
+      internalID: -3387178166991023833
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boss_mech_titan_dir_480px_9
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 104
+        width: 440
+        height: 275
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c773d7f84f9995fd0800000000000000
+      internalID: -2352680054665955460
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boss_mech_titan_dir_480px_10
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 110
+        width: 440
+        height: 275
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b247e26080b4c2420800000000000000
+      internalID: 2606540782176203819
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boss_mech_titan_dir_480px_11
+      rect:
+        serializedVersion: 2
+        x: 992
+        y: 98
+        width: 440
+        height: 275
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 869e2b37e664560f0800000000000000
+      internalID: -1124415091757618840
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      boss_mech_titan_dir_480px_0: -2019555046692090200
+      boss_mech_titan_dir_480px_1: -8179329962505046213
+      boss_mech_titan_dir_480px_10: 2606540782176203819
+      boss_mech_titan_dir_480px_11: -1124415091757618840
+      boss_mech_titan_dir_480px_2: -3666092748295577807
+      boss_mech_titan_dir_480px_3: -2807605188385075477
+      boss_mech_titan_dir_480px_4: 6633594590425170360
+      boss_mech_titan_dir_480px_5: -3915028020434656136
+      boss_mech_titan_dir_480px_6: -6983652997457693520
+      boss_mech_titan_dir_480px_7: 1111796273481155514
+      boss_mech_titan_dir_480px_8: -3387178166991023833
+      boss_mech_titan_dir_480px_9: -2352680054665955460
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
